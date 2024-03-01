@@ -1,0 +1,242 @@
+name: Build slim packages
+
+concurrency:
+  group: slim-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  linux:
+    runs-on: ${{ matrix.runs-on }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        otp:
+          - 24.3.4.2-1
+        os:
+          - ubuntu22.04
+          - ubuntu20.04
+          - el7
+        runs-on:
+          - aws-amd64
+          - ubuntu-20.04
+        use-self-hosted:
+          - ${{ github.repository_owner == 'emqx' }}
+        exclude:
+          - runs-on: ubuntu-20.04
+            use-self-hosted: true
+          - runs-on: aws-amd64
+            use-self-hosted: false
+
+    container: ghcr.io/emqx/emqx-builder/4.4-24:${{ matrix.otp }}-${{ matrix.os }}
+
+    steps:
+    - uses: AutoModality/action-clean@v1
+    - uses: actions/checkout@v3
+      with:
+          fetch-depth: 0 # clone full git history
+    - name: fix-git-unsafe-repository
+      run: git config --global --add safe.directory /__w/emqx/emqx
+    - uses: ./.github/actions/detect-profiles
+    - name: ensure access to github
+      if: endsWith(github.repository, 'enterprise')
+      run: |
+        echo "https://ci%40emqx.io:${{ secrets.CI_GIT_TOKEN }}@github.com" > $HOME/.git-credentials
+        git config --global credential.helper store
+    - uses: actions/cache@v3
+      with:
+        # dialyzer PLTs
+        path: ~/.cache/rebar3/
+        key: dialyzer-${{ matrix.otp }}
+    - name: make xref
+      run: make xref
+    - name: make dialyzer
+      run: make dialyzer
+    - name: build zip packages
+      run: make ${EMQX_NAME}-zip
+    - name: build deb/rpm packages
+      run: make ${EMQX_NAME}-pkg
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: rebar3.crashdump
+        path: ./rebar3.crashdump
+    - name: packages test
+      run: |
+        export CODE_PATH="$GITHUB_WORKSPACE"
+        .ci/build_packages/tests.sh "${EMQX_NAME}" zip
+        .ci/build_packages/tests.sh "${EMQX_NAME}" pkg
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.os }}
+        path: _packages/**/*.zip
+
+  windows:
+    runs-on: windows-2019
+    if: endsWith(github.repository, 'emqx')
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - emqx
+        otp:
+          - 24.3.4.6
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ilammy/msvc-dev-cmd@v1
+    - uses: emqx/setup-beam@v1.16.1-emqx
+      with:
+        otp-version: ${{ matrix.otp }}
+    - name: build
+      env:
+        PYTHON: python
+        DIAGNOSTIC: 1
+        SYSTEM: windows
+      run: |
+        erl -eval "erlang:display(crypto:info_lib())" -s init stop
+        make ${{ matrix.profile }}-zip
+    - name: run emqx
+      timeout-minutes: 1
+      run: |
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx start
+        Start-Sleep -s 5
+        echo "EMQX started"
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx stop
+        echo "EMQX stopped"
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx install
+        echo "EMQX installed"
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx uninstall
+        echo "EMQX uninstaled"
+
+  mac:
+    strategy:
+      fail-fast: false
+      matrix:
+        otp:
+          - 24.3.4.2-1
+        os:
+          - macos-11
+          - macos-12-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: emqx/self-hosted-cleanup-action@v1.0.3
+      if: matrix.os == 'macos-12-arm64'
+    - uses: actions/checkout@v3
+      with:
+          fetch-depth: 0 # clone full git history
+    - name: ensure access to github
+      if: endsWith(github.repository, 'enterprise')
+      run: |
+        echo "https://ci%40emqx.io:${{ secrets.CI_GIT_TOKEN }}@github.com" > $HOME/.git-credentials
+        git config --global credential.helper store
+    - uses: ./.github/actions/detect-profiles
+    - uses: ./.github/actions/package-macos
+      with:
+        otp: ${{ matrix.otp }}
+        os: ${{ matrix.os }}
+        apple_id_password: ${{ secrets.APPLE_ID_PASSWORD }}
+        apple_developer_identity: ${{ secrets.APPLE_DEVELOPER_IDENTITY }}
+        apple_developer_id_bundle: ${{ secrets.APPLE_DEVELOPER_ID_BUNDLE }}
+        apple_developer_id_bundle_password: ${{ secrets.APPLE_DEVELOPER_ID_BUNDLE_PASSWORD }}
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: rebar3.crashdump
+        path: ./rebar3.crashdump
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.os }}
+        path: _packages/**/*.zip
+
+  docker:
+    runs-on: ${{ matrix.runs-on }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        otp:
+          - 24.3.4.2-1
+        runs-on:
+          - aws-amd64
+          - ubuntu-22.04
+        use-self-hosted:
+          - ${{ github.repository_owner == 'emqx' }}
+        exclude:
+          - runs-on: ubuntu-22.04
+            use-self-hosted: true
+          - runs-on: aws-amd64
+            use-self-hosted: false
+
+    steps:
+    - uses: AutoModality/action-clean@v1
+    - uses: actions/checkout@v3
+      with:
+          fetch-depth: 0 # clone full git history
+    - name: fix-git-unsafe-repository
+      run: git config --global --add safe.directory /__w/emqx/emqx
+    - name: prepare
+      run: |
+        if [ -f 'EMQX_ENTERPRISE' ]; then
+          EMQX_NAME=emqx-ee
+        else
+          EMQX_NAME=emqx
+        fi
+        EMQX_IMAGE_TAG=localhost:5000/${{ github.repository_owner }}/$EMQX_NAME
+        PKG_VSN=${PKG_VSN:-$(./pkg-vsn.sh $EMQX_NAME)}
+        echo "EMQX_NAME=$EMQX_NAME" >> $GITHUB_ENV
+        echo "PKG_VSN=$PKG_VSN" >> $GITHUB_ENV
+        echo "EMQX_IMAGE_TAG=$EMQX_IMAGE_TAG" >> $GITHUB_ENV
+    - name: ensure access to github
+      if: endsWith(github.repository, 'enterprise')
+      run: |
+        echo "https://ci%40emqx.io:${{ secrets.CI_GIT_TOKEN }}@github.com" > $HOME/.git-credentials
+        git config --global credential.helper store
+    - uses: docker/setup-buildx-action@v2
+    - uses: docker/metadata-action@v4
+      id: meta
+      with:
+        images: ${{ env.EMQX_IMAGE_TAG }}
+        flavor: |
+          latest=false
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=match,pattern=[v|e](.*),group=1
+        labels:
+          org.opencontainers.image.otp.version=${{ matrix.otp }}
+    - uses: docker/build-push-action@v4
+      if: endsWith(github.repository, 'emqx')
+      with:
+        load: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          BUILD_FROM=ghcr.io/emqx/emqx-builder/4.4-24:${{ matrix.otp }}-alpine3.15.1
+          RUN_FROM=alpine:3.15.1
+          EMQX_NAME=${{ env.EMQX_NAME }}
+        file: deploy/docker/Dockerfile
+        context: .
+    - uses: docker/build-push-action@v4
+      if: endsWith(github.repository, 'enterprise')
+      with:
+        load: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          BUILD_FROM=ghcr.io/emqx/emqx-builder/4.4-24:${{ matrix.otp }}-alpine3.15.1
+          RUN_FROM=alpine:3.15.1
+          EMQX_NAME=${{ env.EMQX_NAME }}
+        file: deploy/docker/Dockerfile.enterprise
+        context: .
+    - name: export docker image
+      run: |
+        docker save ${{ steps.meta.outputs.tags }} | gzip > $EMQX_NAME-$PKG_VSN.tar.gz
+    - uses: actions/upload-artifact@v3
+      with:
+        name: "${{ env.EMQX_NAME }}-docker"
+        path: "${{ env.EMQX_NAME }}-${{ env.PKG_VSN }}.tar.gz"

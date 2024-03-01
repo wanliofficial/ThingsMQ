@@ -1,0 +1,27 @@
+name: 'Detect profiles'
+outputs:
+  profiles:
+    description: 'Detected profiles'
+    value: ${{ steps.detect-profiles.outputs.profiles}}
+
+runs:
+  using: composite
+  steps:
+    - id: detect-profiles
+      shell: bash
+      run: |
+        if [ -d source ]; then
+          ## source code downloaded
+          cd source
+        fi
+        if [ ! -d .git ]; then
+          echo "Not git dir, $(pwd)"
+          exit 1
+        fi
+        if [ -f 'EMQX_ENTERPRISE' ]; then
+          echo "profiles=[\"emqx-ee\"]" >> $GITHUB_OUTPUT
+          echo "EMQX_NAME=emqx-ee" >> $GITHUB_ENV
+        else
+          echo "profiles=[\"emqx\", \"emqx-edge\"]" >> $GITHUB_OUTPUT
+          echo "EMQX_NAME=emqx" >> $GITHUB_ENV
+        fi

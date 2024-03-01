@@ -1,0 +1,39 @@
+## Default
+* @emqx/emqx-review-board
+
+## MQTT & Core
+/src/ @qzhuyan
+/include/ @qzhuyan
+/etc/ @qzhuyan
+/test/ @qzhuyan
+
+## CI
+/.github/ @emqx/emqx-review-board @id
+/.ci/ @emqx/emqx-review-board @id
+/scripts/ @emqx/emqx-review-board @id
+/build @emqx/emqx-review-board @id
+/deploy/ @emqx/emqx-review-board @id
+
+## Authentication & ACL
+/apps/emqx_auth_*/ @savonarola
+/apps/emqx_psk_file/ @savonarola
+/apps/emqx_retainer/ @savonarola
+/apps/emqx_sasl/ @savonarola
+
+## Gateway
+/apps/emqx_coap/ @HJianBo
+/apps/emqx_exhook/ @HJianBo
+/apps/emqx_exproto/ @HJianBo
+/apps/emqx_lua_hook/ @HJianBo
+/apps/emqx_lwm2m/ @HJianBo
+
+## OPs
+/apps/emqx_management/ @zhongwencool
+/apps/emqx_recon/ @zhongwencool
+/apps/emqx_plugin_libs/ @zhongwencool
+/apps/emqx_prometheus/ @zhongwencool
+/apps/emqx_recon/ @zhongwencool
+
+## Data integration
+/apps/emqx_rule_engine/ @thalesmg
+/apps/emqx_web_hook/ @thalesmg

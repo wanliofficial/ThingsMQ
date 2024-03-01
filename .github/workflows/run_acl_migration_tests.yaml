@@ -1,0 +1,22 @@
+name: ACL fix & migration integration tests
+
+on: workflow_dispatch
+
+jobs:
+    test:
+        runs-on: ubuntu-20.04
+        container: ghcr.io/emqx/emqx-builder/4.4-24:24.3.4.2-1-ubuntu20.04
+        strategy:
+            fail-fast: true
+        env:
+            BASE_VERSION: "4.3.0"
+        steps:
+        - uses: actions/checkout@v3
+          with:
+            path: emqx
+        - name: Prepare scripts
+          run: |
+            cp ./emqx/.ci/acl_migration_test/*.sh ./
+        - name: Run tests
+          run: |
+            ./suite.sh emqx "$BASE_VERSION"

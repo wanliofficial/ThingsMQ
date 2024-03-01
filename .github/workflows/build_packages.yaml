@@ -1,0 +1,339 @@
+name: Cross build packages
+
+concurrency:
+  group: build-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - 'main-v4.**'
+    tags:
+      - v*
+      - e*
+  schedule:
+    - cron:  '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    # avoid building when syncing to ee repo
+    if: endsWith(github.repository, 'emqx')
+    runs-on: ubuntu-20.04
+    # prepare source with any OTP version, no need for a matrix
+    container: ghcr.io/emqx/emqx-builder/4.4-20:24.3.4.2-1-ubuntu20.04
+    outputs:
+      profiles: ${{ steps.detect-profiles.outputs.profiles}}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: source
+          fetch-depth: 0 # clone full git history
+      - name: detect-profiles
+        id: detect-profiles
+        uses: ./source/.github/actions/detect-profiles
+      - name: get_all_deps
+        if: endsWith(github.repository, 'emqx')
+        run: |
+          make -C source deps-all
+          zip -ryq source.zip source/* source/.[^.]*
+      - name: get_all_deps_ee
+        if: endsWith(github.repository, 'enterprise')
+        run: |
+          echo "https://ci%40emqx.io:${{ secrets.CI_GIT_TOKEN }}@github.com" > $HOME/.git-credentials
+          git config --global credential.helper store
+          make -C source deps-all
+          zip -ryq source.zip source/* source/.[^.]*
+      - uses: actions/upload-artifact@v3
+        with:
+          name: source
+          path: source.zip
+
+  windows:
+    runs-on: windows-2019
+    needs: prepare
+    if: endsWith(github.repository, 'emqx')
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{fromJSON(needs.prepare.outputs.profiles)}}
+        otp:
+          - 24.3.4.6
+        exclude:
+          - profile: emqx-edge
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: source
+        path: .
+    - name: unzip source code
+      run: Expand-Archive -Path source.zip -DestinationPath ./
+    - uses: ilammy/msvc-dev-cmd@v1
+    - uses: emqx/setup-beam@v1.16.1-emqx
+      with:
+        otp-version: ${{ matrix.otp }}
+    - name: build
+      env:
+        PYTHON: python
+        DIAGNOSTIC: 1
+        PROFILE: emqx
+        SYSTEM: windows
+      working-directory: source
+      run: |
+        erl -eval "erlang:display(crypto:info_lib())" -s init stop
+        make ${{ matrix.profile }}-zip
+    - name: run emqx
+      timeout-minutes: 1
+      working-directory: source
+      run: |
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx start
+        Start-Sleep -s 5
+        echo "EMQX started"
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx stop
+        echo "EMQX stopped"
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx install
+        echo "EMQX installed"
+        ./_build/${{ matrix.profile }}/rel/emqx/bin/emqx uninstall
+        echo "EMQX uninstaled"
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.profile }}
+        path: source/_packages/${{ matrix.profile }}/
+
+  mac:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        otp:
+          - 24.3.4.2-1
+        os:
+          - macos-11
+          - macos-12-arm64
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: emqx/self-hosted-cleanup-action@v1.0.3
+      if: matrix.os == 'macos-12-arm64'
+    - uses: actions/download-artifact@v3
+      with:
+        name: source
+        path: .
+    - name: unzip source code
+      run: |
+        ln -s . source
+        unzip -q source.zip
+        rm source source.zip
+    - uses: ./.github/actions/detect-profiles
+    - uses: ./.github/actions/package-macos
+      with:
+        otp: ${{ matrix.otp }}
+        os: ${{ matrix.os }}
+        apple_id_password: ${{ secrets.APPLE_ID_PASSWORD }}
+        apple_developer_identity: ${{ secrets.APPLE_DEVELOPER_IDENTITY }}
+        apple_developer_id_bundle: ${{ secrets.APPLE_DEVELOPER_ID_BUNDLE }}
+        apple_developer_id_bundle_password: ${{ secrets.APPLE_DEVELOPER_ID_BUNDLE_PASSWORD }}
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.EMQX_NAME }}
+        path: _packages/${{ env.EMQX_NAME }}/
+
+  linux:
+    runs-on: ubuntu-20.04
+
+    needs: prepare
+
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{fromJSON(needs.prepare.outputs.profiles)}}
+        package:
+          - zip
+          - pkg
+        otp:
+          - 24.3.4.2-1
+        arch:
+          - amd64
+          - arm64
+        os:
+          - ubuntu22.04
+          - ubuntu20.04
+          - ubuntu18.04
+          - ubuntu16.04
+          - debian11
+          - debian10
+          - debian9
+          - el8
+          - el7
+          - amzn2
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - uses: docker/setup-qemu-action@v2
+      with:
+        image: tonistiigi/binfmt:latest
+        platforms: all
+    - uses: docker/setup-buildx-action@v2
+    - uses: actions/download-artifact@v3
+      with:
+        name: source
+        path: .
+    - name: unzip source code
+      run: unzip -q source.zip
+    - name: build emqx packages
+      env:
+        OTP: ${{ matrix.otp }}
+        PROFILE: ${{ matrix.profile }}
+        PACKAGE: ${{ matrix.package}}
+        ARCH: ${{ matrix.arch }}
+        SYSTEM: ${{ matrix.os }}
+      working-directory: source
+      run: |
+        ./scripts/buildx.sh \
+          --profile "${PROFILE}" \
+          --pkgtype "${PACKAGE}" \
+          --arch "${ARCH}" \
+          --builder "ghcr.io/emqx/emqx-builder/4.4-24:${OTP}-${SYSTEM}"
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.profile }}
+        path: source/_packages/${{ matrix.profile }}/
+
+  docker:
+    runs-on: ubuntu-20.04
+    needs: prepare
+
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{fromJSON(needs.prepare.outputs.profiles)}}
+        otp:
+          - 24.3.4.2-1
+        registry:
+          - 'docker.io'
+          - 'public.ecr.aws'
+        exclude:
+          # we don't have an aws ecr repo for enterprise and edge yet
+          - profile: emqx-edge
+            registry: 'public.ecr.aws'
+          - profile: emqx-ee
+            registry: 'public.ecr.aws'
+
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: source
+        path: .
+    - name: unzip source code
+      run: unzip -q source.zip
+    - uses: docker/setup-qemu-action@v2
+      with:
+        image: tonistiigi/binfmt:latest
+        platforms: all
+    - uses: docker/setup-buildx-action@v2
+    - uses: aws-actions/configure-aws-credentials@v1-node16
+      if: matrix.registry == 'public.ecr.aws'
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+    - name: Docker login to aws ecr
+      if: matrix.registry == 'public.ecr.aws'
+      run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+    - uses: docker/login-action@v2
+      if: matrix.registry == 'docker.io'
+      with:
+        username: ${{ secrets.DOCKER_HUB_USER }}
+        password: ${{ secrets.DOCKER_HUB_TOKEN }}
+    - uses: docker/metadata-action@v4
+      id: meta
+      with:
+        images: ${{ matrix.registry }}/${{ github.repository_owner }}/${{ matrix.profile }}
+        ## only 5.0 is latest
+        flavor: |
+          latest=false # latest is now 5.0
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=match,pattern=[v|e](.*),group=1
+        labels:
+          org.opencontainers.image.otp.version=${{ matrix.otp }}
+    - uses: docker/build-push-action@v3
+      if: matrix.profile != 'emqx-ee'
+      with:
+        ## only push when stable tag and rc tag
+        push: ${{ contains(github.ref, 'tags') && !contains(github.ref_name, 'beta') && !contains(github.ref_name, 'alpha') }}
+        pull: true
+        no-cache: true
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          BUILD_FROM=ghcr.io/emqx/emqx-builder/4.4-24:${{ matrix.otp }}-alpine3.15.1
+          RUN_FROM=alpine:3.15.1
+          EMQX_NAME=${{ matrix.profile }}
+        file: source/deploy/docker/Dockerfile
+        context: source
+    - uses: docker/build-push-action@v3
+      if: matrix.profile == 'emqx-ee'
+      with:
+        ## only push when stable tag and rc tag
+        push: ${{ contains(github.ref, 'tags') && !contains(github.ref_name, 'beta') && !contains(github.ref_name, 'alpha') }}
+        pull: true
+        no-cache: true
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          BUILD_FROM=ghcr.io/emqx/emqx-builder/4.4-24:${{ matrix.otp }}-alpine3.15.1
+          RUN_FROM=alpine:3.15.1
+          EMQX_NAME=${{ matrix.profile }}
+        file: source/deploy/docker/Dockerfile.enterprise
+        context: source
+
+  publish_artifacts:
+    runs-on: ubuntu-20.04
+
+    if: startsWith(github.ref, 'refs/tags/')
+
+    needs: [prepare, mac, linux, docker]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{fromJSON(needs.prepare.outputs.profiles)}}
+
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: ${{ matrix.profile }}
+        path: packages/${{ matrix.profile }}
+    - name: install dos2unix
+      run: sudo apt-get update && sudo apt install -y dos2unix
+    - name: get packages
+      run: |
+        set -e -u
+        cd packages/${{ matrix.profile }}
+        for var in $( ls |grep emqx |grep -v sha256); do
+          dos2unix $var.sha256
+          echo "$(cat $var.sha256) $var" | sha256sum -c || exit 1
+        done
+        cd -
+    - uses: aws-actions/configure-aws-credentials@v1-node16
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+    - name: upload to aws s3
+      run: |
+        set -e -u
+        if [ "${{ matrix.profile }}"  == "emqx" ];then
+            s3dir="emqx-ce"
+        else
+            s3dir=${{ matrix.profile }}
+        fi
+        aws s3 cp --recursive packages/${{ matrix.profile }} s3://${{ secrets.AWS_S3_BUCKET }}/${s3dir}/${{ github.ref_name }}
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_ID }} --paths "/${s3dir}/${{ github.ref_name }}/*"

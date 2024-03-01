@@ -1,0 +1,53 @@
+name: Check Apps Version
+
+on: [pull_request]
+
+jobs:
+  check_apps_version_4_x:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        erl_otp:
+        - 24.3.4.2-1
+        os:
+        - ubuntu20.04
+
+    container: ghcr.io/emqx/emqx-builder/4.4-24:${{ matrix.erl_otp }}-${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # need full history
+      - name: fix-git-unsafe-repository
+        run: git config --global --add safe.directory /__w/emqx/emqx
+      - name: Check relup version DB
+        if: endsWith(github.repository, 'emqx')
+        run: |
+          PKG_VSN=$(./pkg-vsn.sh)
+          ./scripts/relup-base-vsns.escript check-vsn-db $PKG_VSN ./data/relup-paths.eterm
+      - name: Check relup version DB (ee)
+        if: endsWith(github.repository, 'enterprise')
+        run: |
+          PKG_VSN=$(./pkg-vsn.sh)
+          ./scripts/relup-base-vsns.escript check-vsn-db $PKG_VSN ./data/relup-paths-ee.eterm
+      - name: Check relup (ce)
+        if: endsWith(github.repository, 'emqx')
+        run: ./scripts/update-appup.sh emqx --check
+      - name: Check relup (ee)
+        if: endsWith(github.repository, 'enterprise')
+        run: ./scripts/update-appup.sh emqx-ee --check
+      - name: Check apps version
+        run: ./scripts/check-apps-vsn.sh
+      - name: Check chart versions
+        run: ./scripts/check-chart-vsn.sh
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: expected_appup_files
+          path: |
+            apps/*/src/*.appup.src
+            src/*.appup.src
+            lib-ce/*/src/*.appup.src
+            lib-ee/*/src/*.appup.src
+          retention-days: 1
