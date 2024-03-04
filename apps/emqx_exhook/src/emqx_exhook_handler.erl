@@ -164,16 +164,16 @@ on_session_subscribed(ClientInfo, Topic, SubOpts) ->
             topic => Topic,
             subopts => maps:with([qos, share, rh, rap, nl], SubOpts)
            },
-    %cast('session.subscribed', Req).
-    Resp = call_fold('session.subscribed', Req,
-        fun emqx_exhook_handler:merge_responsed_message/2),
-    ?LOG(info, "Unknown responsed value ~0p to merge to callback chain", [Resp]),
-    case Resp of
-        {StopOrOk, #{message := NMessage}}
-            when ?STOP_OR_OK(StopOrOk) -> {StopOrOk, assign_to_message(NMessage, NMessage)};
-        ignore ->
-            {ok, ''}
-    end.
+    cast('session.subscribed', Req).
+%%    Resp = call_fold('session.subscribed', Req,
+%%        fun emqx_exhook_handler:merge_responsed_message/2),
+%%    ?LOG(info, "Unknown responsed value ~0p to merge to callback chain", [Resp]),
+%%    case Resp of
+%%        {StopOrOk, #{message := NMessage}}
+%%            when ?STOP_OR_OK(StopOrOk) -> {StopOrOk, assign_to_message(NMessage, NMessage)};
+%%        ignore ->
+%%            {ok, ''}
+%%    end.
 
 on_session_unsubscribed(ClientInfo, Topic, _SubOpts) ->
     Req = #{clientinfo => clientinfo(ClientInfo),
@@ -229,7 +229,15 @@ on_message_delivered(ClientInfo, Message) ->
     Req = #{clientinfo => clientinfo(ClientInfo),
             message => message(Message)
            },
-    cast('message.delivered', Req).
+    case call_fold('message.delivered', Req,
+        fun emqx_exhook_handler:merge_responsed_message/2) of
+        {StopOrOk, #{message := NMessage}}
+            when ?STOP_OR_OK(StopOrOk) ->
+            {StopOrOk, assign_to_message(NMessage, Message)};
+        ignore ->
+            {ok, Message}
+    end.
+    %cast('message.delivered', Req).
 
 on_message_acked(_ClientInfo, #message{topic = <<"$SYS/", _/binary>>}) ->
     ok;
