@@ -171,7 +171,7 @@ on_session_subscribed(ClientInfo, Topic, SubOpts) ->
             when ?STOP_OR_OK(StopOrOk) ->
             {StopOrOk, NMessage};
         ignore ->
-            {ok, NMessage}
+            {ok, ''}
     end.
 
 on_session_unsubscribed(ClientInfo, Topic, _SubOpts) ->
