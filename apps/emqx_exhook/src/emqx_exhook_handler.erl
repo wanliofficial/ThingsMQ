@@ -168,7 +168,7 @@ on_session_subscribed(ClientInfo, Topic, SubOpts) ->
     case call_fold('session.subscribed', Req,
         fun emqx_exhook_handler:merge_responsed_message/2) of
         {StopOrOk, #{message := NMessage}}
-            when ?STOP_OR_OK(StopOrOk) -> {StopOrOk, [self() ! {deliver, Topic, NMessage}]};
+            when ?STOP_OR_OK(StopOrOk) -> {StopOrOk, assign_to_message(NMessage, NMessage)};
         ignore ->
             {ok, ''}
     end.
