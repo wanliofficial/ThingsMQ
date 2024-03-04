@@ -284,7 +284,7 @@ do_call(ChannName, Fun, Req, ReqOpts) ->
     ?LOG(debug, "Call ~0p:~0p(~0p, ~0p)", [?PB_CLIENT_MOD, Fun, NReq, Options]),
     case catch apply(?PB_CLIENT_MOD, Fun, [NReq, Options]) of
         {ok, Resp, Metadata} ->
-            ?LOG(debug, "Response {ok, ~0p, ~0p}", [Resp, Metadata]),
+            ?LOG(info, "Response {ok, ~0p, ~0p}", [Resp, Metadata]),
             {ok, Resp};
         {error, {Code, Msg}, _Metadata} ->
             ?LOG(error, "CALL ~0p:~0p(~0p, ~0p) response errcode: ~0p, errmsg: ~0p",
