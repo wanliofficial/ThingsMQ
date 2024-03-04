@@ -165,11 +165,12 @@ on_session_subscribed(ClientInfo, Topic, SubOpts) ->
             subopts => maps:with([qos, share, rh, rap, nl], SubOpts)
            },
     %cast('session.subscribed', Req).
-    case call_fold('session.subscribed', Req,
-        fun emqx_exhook_handler:merge_responsed_message/2) of
+    Resp = call_fold('session.subscribed', Req,
+        fun emqx_exhook_handler:merge_responsed_message/2),
+    ?LOG(info, "Unknown responsed value ~0p to merge to callback chain", [Resp]),
+    case Resp of
         {StopOrOk, #{message := NMessage}}
-            when ?STOP_OR_OK(StopOrOk) ->
-            {StopOrOk, NMessage};
+            when ?STOP_OR_OK(StopOrOk) -> {StopOrOk, assign_to_message(NMessage, NMessage)};
         ignore ->
             {ok, ''}
     end.
