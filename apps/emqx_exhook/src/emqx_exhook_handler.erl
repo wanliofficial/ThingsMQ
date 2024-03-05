@@ -165,15 +165,15 @@ on_session_subscribed(ClientInfo, Topic, SubOpts) ->
             subopts => maps:with([qos, share, rh, rap, nl], SubOpts),
             message => #{}
            },
-    %cast('session.subscribed', Req).
-    case call_fold('session.subscribed', Req,
-                    fun emqx_exhook_handler:merge_responsed_message/2) of
-        {StopOrOk, #{message := NMessage}}
-            when ?STOP_OR_OK(StopOrOk) ->
-                {StopOrOk, assign_to_message(NMessage, NMessage)};
-        ignore ->
-            {ok, ''}
-    end.
+    cast('session.subscribed', Req).
+%%    case call_fold('session.subscribed', Req,
+%%                    fun emqx_exhook_handler:merge_responsed_message/2) of
+%%        {StopOrOk, #{message := NMessage}}
+%%            when ?STOP_OR_OK(StopOrOk) ->
+%%                {StopOrOk, assign_to_message(NMessage, NMessage)};
+%%        ignore ->
+%%            {ok, ''}
+%%    end.
 
 
 on_session_unsubscribed(ClientInfo, Topic, _SubOpts) ->
