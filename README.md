@@ -1,7 +1,7 @@
 # hisadim
 
 #### 介绍
-highly scalable, highly available distributed MQTT messaging broker for IoT
+*H*ighly *s*calable, highly *a*vailable *di*stributed *M*QTT messaging broker for IoT
 
 #### 软件架构
 软件架构说明
