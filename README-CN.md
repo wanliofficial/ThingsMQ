@@ -1,4 +1,4 @@
-# EMQX Broker
+# ThingsMQ
 
 [![GitHub Release](https://img.shields.io/github/release/emqx/emqx?color=brightgreen)](https://github.com/emqx/emqx/releases)
 [![Build Status](https://travis-ci.org/emqx/emqx.svg)](https://travis-ci.org/emqx/emqx)
@@ -11,18 +11,18 @@
 
 [English](./README.md) | 简体中文 | [日本語](./README-JP.md) | [русский](./README-RU.md)
 
-*EMQX* 是一款完全开源，高度可伸缩，高可用的分布式 MQTT 消息服务器，适用于 IoT、M2M 和移动应用程序，可处理千万级别的并发客户端。
+ThingsMQ 是一款完全开源，高度可伸缩，高可用的分布式 MQTT 消息服务器，适用于 IoT、M2M 和移动应用程序，可处理千万级别的并发客户端。
 
-从 3.0 版本开始，*EMQX* 完整支持 MQTT V5.0 协议规范，向下兼容 MQTT V3.1 和 V3.1.1，并支持 MQTT-SN、CoAP、LwM2M、WebSocket 和 STOMP 等通信协议。EMQX 3.0 单集群可支持千万级别的 MQTT 并发连接。
+从 3.0 版本开始，ThingsMQ 完整支持 MQTT V5.0 协议规范，向下兼容 MQTT V3.1 和 V3.1.1，并支持 MQTT-SN、CoAP、LwM2M、WebSocket 和 STOMP 等通信协议。EMQX 3.0 单集群可支持千万级别的 MQTT 并发连接。
 
 - 新功能的完整列表，请参阅 [EMQX Release Notes](https://github.com/emqx/emqx/releases)。
 - 获取更多信息，请访问 [EMQX 官网](https://www.emqx.cn/)。
 
 ## 安装
 
-*EMQX* 是跨平台的，支持 Linux、Unix、macOS 以及 Windows。这意味着 *EMQX* 可以部署在 x86_64 架构的服务器上，也可以部署在 Raspberry Pi 这样的 ARM 设备上。
+ThingsMQ 是跨平台的，支持 Linux、Unix、macOS 以及 Windows。这意味着 ThingsMQ 可以部署在 x86_64 架构的服务器上，也可以部署在 Raspberry Pi 这样的 ARM 设备上。
 
-Windows 上编译和运行 *EMQX* 的详情参考：[Windows.md](./Windows.md)
+Windows 上编译和运行 ThingsMQ 的详情参考：[Windows.md](./Windows.md)
 
 #### EMQX Docker 镜像安装
 
@@ -39,7 +39,7 @@ docker run -d --name emqx -p 1883:1883 -p 8081:8081 -p 8083:8083 -p 8883:8883 -p
 
 ## 从源码构建
 
-3.0 版本开始，构建 *EMQX* 需要 Erlang/OTP R21+。
+3.0 版本开始，构建 ThingsMQ 需要 Erlang/OTP R21+。
 
 4.3 及以后的版本：
 
@@ -75,7 +75,7 @@ _build/emqx/rel/emqx/bin/emqx console
 ./bin/emqx stop
 ```
 
-*EMQX* 启动，可以使用浏览器访问 http://localhost:18083 来查看 Dashboard。
+ThingsMQ 启动，可以使用浏览器访问 http://localhost:18083 来查看 Dashboard。
 
 ## 测试
 

@@ -1,4 +1,4 @@
-# EMQX Broker
+# ThingsMQ
 
 [![GitHub Release](https://img.shields.io/github/release/emqx/emqx?color=brightgreen)](https://github.com/emqx/emqx/releases)
 [![Build Status](https://travis-ci.org/emqx/emqx.svg)](https://travis-ci.org/emqx/emqx)
@@ -10,16 +10,16 @@
 
 English | [简体中文](./README-CN.md) | [日本語](./README-JP.md) | [русский](./README-RU.md)
 
-*EMQX* broker is a fully open source, highly scalable, highly available distributed MQTT messaging broker for IoT, M2M and Mobile applications that can handle tens of millions of concurrent clients.
+ThingsMQ is a fully open source, highly scalable, highly available distributed MQTT messaging broker for IoT, M2M and Mobile applications that can handle tens of millions of concurrent clients.
 
-Starting from 3.0 release, *EMQX* broker fully supports MQTT V5.0 protocol specifications and backward compatible with MQTT V3.1 and V3.1.1,  as well as other communication protocols such as MQTT-SN, CoAP, LwM2M, WebSocket and STOMP. The 3.0 release of the *EMQX* broker can scaled to 10+ million concurrent MQTT connections on one cluster.
+Starting from 3.0 release, ThingsMQ fully supports MQTT V5.0 protocol specifications and backward compatible with MQTT V3.1 and V3.1.1,  as well as other communication protocols such as MQTT-SN, CoAP, LwM2M, WebSocket and STOMP. The 3.0 release of the *EMQX* broker can scaled to 10+ million concurrent MQTT connections on one cluster.
 
 - For full list of new features, please read [EMQX Release Notes](https://github.com/emqx/emqx/releases).
 - For more information, please visit [EMQX homepage](https://www.emqx.io).
 
 ## Installation
 
-The *EMQX* broker is cross-platform, which supports Linux, Unix, macOS and Windows. It means *EMQX* can be deployed on x86_64 architecture servers and ARM devices like Raspberry Pi.
+The ThingsMQ is cross-platform, which supports Linux, Unix, macOS and Windows. It means *EMQX* can be deployed on x86_64 architecture servers and ARM devices like Raspberry Pi.
 
 See more details for building and running *EMQX* on Windows in [Windows.md](./Windows.md)
 
@@ -39,7 +39,7 @@ Get the binary package of the corresponding OS from [EMQX Download](https://www.
 
 ## Build From Source
 
-The *EMQX* broker requires Erlang/OTP R21+ to build since 3.0 release.
+The ThingsMQ requires Erlang/OTP R21+ to build since 3.0 release.
 
 For 4.3 and later versions.
 
