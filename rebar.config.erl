@@ -91,7 +91,7 @@ project_app_dirs() ->
 
 plugins(HasElixir) ->
     [ {relup_helper,{git,"https://github.com/emqx/relup_helper", {tag, "2.1.0"}}}
-    , {er_coap_client, {git, "https://github.com/emqx/er_coap_client", {tag, "v1.0.4"}}}
+    , {er_coap_client, {git, "https://github.com/emqx/er_coap_client", {tag, "v1.1.0"}}}
       %% emqx main project does not require port-compiler
       %% pin at root level for deterministic
     , {pc, {git, "https://github.com/blt/port_compiler.git", {tag, "v1.15.0"}}}
@@ -160,6 +160,8 @@ profiles() ->
 %% PkgType: bin | pkg
 relx(Vsn, RelType, PkgType) ->
     IsEnterprise = is_enterprise(),
+    io:format("overlay_vars RAW: ~p~n", [overlay_vars(RelType, PkgType, IsEnterprise)]),
+    io:format("USE EE: ~p~n", [IsEnterprise]),
     [ {include_src,false}
     , {include_erts, true}
     , {extended_start_script,false}
