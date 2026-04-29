@@ -76,7 +76,7 @@
           %% Stomp ClientInfo
           clientinfo :: emqx_types:clientinfo(),
           %% Stomp Heartbeats
-          heart_beats :: maybe(emqx_stomp_hearbeat:heartbeat()),
+          heart_beats :: option(emqx_stomp_hearbeat:heartbeat()),
           %% Stomp Connection State
           connected = false,
           %% Timers
@@ -93,8 +93,8 @@
           statfun :: {function(), list()},
           %% The confs for the connection
           %% TODO: put these configs into a public mem?
-          allow_anonymous :: maybe(boolean()),
-          default_user :: maybe(list())
+          allow_anonymous :: option(boolean()),
+          default_user :: option(list())
          }).
 
 -define(DEFAULT_SUB_ACK, <<"auto">>).

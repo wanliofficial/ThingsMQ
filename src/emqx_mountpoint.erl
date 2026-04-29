@@ -29,7 +29,7 @@
 
 -type(mountpoint() :: binary()).
 
--spec(mount(maybe(mountpoint()), Any) -> Any
+-spec(mount(option(mountpoint()), Any) -> Any
   when Any :: emqx_types:topic()
             | emqx_types:message()
             | emqx_types:topic_filters()).
@@ -47,7 +47,7 @@ mount(MountPoint, TopicFilters) when is_list(TopicFilters) ->
 prefix(MountPoint, Topic) ->
     <<MountPoint/binary, Topic/binary>>.
 
--spec(unmount(maybe(mountpoint()), Any) -> Any
+-spec(unmount(option(mountpoint()), Any) -> Any
   when Any :: emqx_types:topic()
             | emqx_types:message()).
 unmount(undefined, Any) ->
@@ -63,7 +63,7 @@ unmount(MountPoint, Msg = #message{topic = Topic}) ->
         Topic1  -> Msg#message{topic = Topic1}
     end.
 
--spec(replvar(maybe(mountpoint()), map()) -> maybe(mountpoint())).
+-spec(replvar(option(mountpoint()), map()) -> option(mountpoint())).
 replvar(undefined, _Vars) ->
     undefined;
 replvar(MountPoint, #{clientid := ClientId, username := Username}) ->

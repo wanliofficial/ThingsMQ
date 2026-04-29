@@ -167,7 +167,7 @@ stats(?OLD(MQ)) ->
     stats(live_upgrade(MQ)).
 
 %% @doc Enqueue a message.
--spec(in(message(), mqueue()) -> {maybe(message()), mqueue()}).
+-spec(in(message(), mqueue()) -> {option(message()), mqueue()}).
 in(Msg = #message{qos = ?QOS_0}, MQ = #mqueue{store_qos0 = false}) ->
     {_Dropped = Msg, MQ};
 in(Msg = #message{topic = Topic}, MQ = #mqueue{default_p = Dp,

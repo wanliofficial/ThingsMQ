@@ -124,7 +124,7 @@ start_link() ->
 stop() ->
     gen_server:stop(?SERVER).
 
--spec(init_gc_state(zone()) -> maybe(emqx_gc:gc_state())).
+-spec(init_gc_state(zone()) -> option(emqx_gc:gc_state())).
 init_gc_state(Zone) ->
     maybe_apply(fun emqx_gc:init/1, force_gc_policy(Zone)).
 
@@ -139,7 +139,7 @@ oom_policy(Zone) -> force_shutdown_policy(Zone).
 idle_timeout(Zone) ->
     get_env(Zone, idle_timeout, ?DEFAULT_IDLE_TIMEOUT).
 
--spec(publish_limit(zone()) -> maybe(esockd_rate_limit:config())).
+-spec(publish_limit(zone()) -> option(esockd_rate_limit:config())).
 publish_limit(Zone) ->
     get_env(Zone, publish_limit).
 
@@ -161,7 +161,7 @@ mqtt_strict_mode(Zone) ->
 max_packet_size(Zone) ->
     get_env(Zone, max_packet_size, ?MAX_PACKET_SIZE).
 
--spec(mountpoint(zone()) -> maybe(emqx_mountpoint:mountpoint())).
+-spec(mountpoint(zone()) -> option(emqx_mountpoint:mountpoint())).
 mountpoint(Zone) -> get_env(Zone, mountpoint).
 
 -spec(use_username_as_clientid(zone()) -> boolean()).
@@ -192,7 +192,7 @@ enable_flapping_detect(Zone) ->
 ignore_loop_deliver(Zone) ->
     get_env(Zone, ignore_loop_deliver, false).
 
--spec(server_keepalive(zone()) -> maybe(pos_integer())).
+-spec(server_keepalive(zone()) -> option(pos_integer())).
 server_keepalive(Zone) ->
     get_env(Zone, server_keepalive).
 
@@ -208,11 +208,11 @@ max_inflight(Zone) ->
 session_expiry_interval(Zone) ->
     get_env(Zone, session_expiry_interval, 0).
 
--spec(force_gc_policy(zone()) -> maybe(emqx_gc:opts())).
+-spec(force_gc_policy(zone()) -> option(emqx_gc:opts())).
 force_gc_policy(Zone) ->
     get_env(Zone, force_gc_policy).
 
--spec(force_shutdown_policy(zone()) -> maybe(emqx_oom:opts())).
+-spec(force_shutdown_policy(zone()) -> option(emqx_oom:opts())).
 force_shutdown_policy(Zone) ->
     get_env(Zone, force_shutdown_policy).
 
@@ -238,12 +238,12 @@ tcp_keepalive(Zone) ->
 %% APIs
 %%--------------------------------------------------------------------
 
--spec(get_env(maybe(zone()), atom()) -> maybe(term())).
+-spec(get_env(option(zone()), atom()) -> option(term())).
 get_env(undefined, Key) -> emqx:get_env(Key);
 get_env(Zone, Key) ->
     get_env(Zone, Key, undefined).
 
--spec(get_env(maybe(zone()), atom(), term()) -> maybe(term())).
+-spec(get_env(option(zone()), atom(), term()) -> option(term())).
 get_env(undefined, Key, Def) ->
     emqx:get_env(Key, Def);
 get_env(Zone, Key, Def) ->

@@ -57,8 +57,8 @@
 
 -record(state,
         { start_time :: erlang:timestamp()
-        , heartbeat  :: maybe(reference())
-        , ticker     :: maybe(reference())
+        , heartbeat  :: option(reference())
+        , ticker     :: option(reference())
         , version    :: binary()
         , sysdescr   :: binary()
         }).

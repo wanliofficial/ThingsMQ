@@ -62,13 +62,13 @@
           %% The {active, N} option
           active_n :: pos_integer(),
           %% Limiter
-          limiter :: maybe(emqx_limiter:limiter()),
+          limiter :: option(emqx_limiter:limiter()),
           %% Limit Timer
-          limit_timer :: maybe(reference()),
+          limit_timer :: option(reference()),
           %% GC State
-          gc_state :: maybe(emqx_gc:gc_state()),
+          gc_state :: option(emqx_gc:gc_state()),
           %% Stats Timer
-          stats_timer :: disabled | maybe(reference()),
+          stats_timer :: disabled | option(reference()),
           %% Parser State
           parser :: emqx_stomp_frame:parser(),
           %% Protocol State

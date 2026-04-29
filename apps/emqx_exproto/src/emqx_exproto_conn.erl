@@ -67,19 +67,19 @@
           %% We should remove it
           sendfun :: function() | undefined,
           %% Limiter
-          limiter :: maybe(emqx_limiter:limiter()),
+          limiter :: option(emqx_limiter:limiter()),
           %% Limit Timer
-          limit_timer :: maybe(reference()),
+          limit_timer :: option(reference()),
           %% Channel State
           channel :: emqx_exproto_channel:channel(),
           %% GC State
-          gc_state :: maybe(emqx_gc:gc_state()),
+          gc_state :: option(emqx_gc:gc_state()),
           %% Stats Timer
-          stats_timer :: disabled | maybe(reference()),
+          stats_timer :: disabled | option(reference()),
           %% Idle Timeout
           idle_timeout :: integer(),
           %% Idle Timer
-          idle_timer :: maybe(reference())
+          idle_timer :: option(reference())
         }).
 
 -type(state() :: #state{}).

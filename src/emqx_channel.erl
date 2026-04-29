@@ -76,21 +76,21 @@
           %% MQTT ClientInfo
           clientinfo :: emqx_types:clientinfo(),
           %% MQTT Session
-          session :: maybe(emqx_session:session()),
+          session :: option(emqx_session:session()),
           %% Keepalive
-          keepalive :: maybe(emqx_keepalive:keepalive()),
+          keepalive :: option(emqx_keepalive:keepalive()),
           %% MQTT Will Msg
-          will_msg :: maybe(emqx_types:message()),
+          will_msg :: option(emqx_types:message()),
           %% MQTT Topic Aliases
           topic_aliases :: emqx_types:topic_aliases(),
           %% MQTT Topic Alias Maximum
-          alias_maximum :: maybe(map()),
+          alias_maximum :: option(map()),
           %% Authentication Data Cache
-          auth_cache :: maybe(map()),
+          auth_cache :: option(map()),
           %% Quota checkers
-          quota :: maybe(emqx_limiter:limiter()),
+          quota :: option(emqx_limiter:limiter()),
           %% Timers
-          timers :: #{channel_timer() => disabled | maybe(reference())},
+          timers :: #{channel_timer() => disabled | option(reference())},
           %% Conn State
           conn_state :: conn_state(),
           %% Takeover

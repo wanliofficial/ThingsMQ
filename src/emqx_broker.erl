@@ -375,7 +375,7 @@ subscribed(SubId, Topic) when ?IS_SUBID(SubId) ->
     SubPid = emqx_broker_helper:lookup_subpid(SubId),
     ets:member(?SUBOPTION, {SubPid, Topic}).
 
--spec(get_subopts(pid(), emqx_topic:topic()) -> maybe(emqx_types:subopts())).
+-spec(get_subopts(pid(), emqx_topic:topic()) -> option(emqx_types:subopts())).
 get_subopts(SubPid, Topic) when is_pid(SubPid), is_binary(Topic) ->
     lookup_value(?SUBOPTION, {SubPid, Topic});
 get_subopts(SubId, Topic) when ?IS_SUBID(SubId) ->

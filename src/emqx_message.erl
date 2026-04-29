@@ -149,7 +149,7 @@ make(MsgId, From, QoS, Topic, Payload, Flags, Headers)
              timestamp = Now
             }.
 
--spec(id(emqx_types:message()) -> maybe(binary())).
+-spec(id(emqx_types:message()) -> option(binary())).
 id(#message{id = Id}) -> Id.
 
 -spec(qos(emqx_types:message()) -> emqx_types:qos()).
@@ -190,7 +190,7 @@ get_flag(Flag, Msg) ->
 get_flag(Flag, #message{flags = Flags}, Default) ->
     maps:get(Flag, Flags, Default).
 
--spec(get_flags(emqx_types:message()) -> maybe(map())).
+-spec(get_flags(emqx_types:message()) -> option(map())).
 get_flags(#message{flags = Flags}) -> Flags.
 
 -spec(set_flag(emqx_types:flag(), emqx_types:message()) -> emqx_types:message()).
@@ -213,7 +213,7 @@ unset_flag(Flag, Msg = #message{flags = Flags}) ->
 set_headers(New, Msg = #message{headers = Old}) when is_map(New) ->
     Msg#message{headers = maps:merge(Old, New)}.
 
--spec(get_headers(emqx_types:message()) -> maybe(map())).
+-spec(get_headers(emqx_types:message()) -> option(map())).
 get_headers(Msg) -> Msg#message.headers.
 
 -spec(get_header(term(), emqx_types:message()) -> term()).

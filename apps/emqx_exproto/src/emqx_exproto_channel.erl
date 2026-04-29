@@ -47,7 +47,7 @@
           %% Conn info
           conninfo :: emqx_types:conninfo(),
           %% Client info from `register` function
-          clientinfo :: maybe(map()),
+          clientinfo :: option(map()),
           %% Connection state
           conn_state :: conn_state(),
           %% Subscription
@@ -57,9 +57,9 @@
           %% Inflight function name
           inflight = undefined,
           %% Keepalive
-          keepalive :: maybe(emqx_keepalive:keepalive()),
+          keepalive :: option(emqx_keepalive:keepalive()),
           %% Timers
-          timers ::  #{atom() => disabled | maybe(reference())},
+          timers ::  #{atom() => disabled | option(reference())},
           %% Closed reason
           closed_reason = undefined
          }).

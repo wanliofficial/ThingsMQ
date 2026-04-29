@@ -20,7 +20,7 @@
 
 -define(KV_TAB, '@rule_engine_db').
 
--type(maybe(T) :: T | undefined).
+-type(option(T) :: T | undefined).
 
 -type(rule_id() :: binary()).
 -type(rule_name() :: binary()).
@@ -55,7 +55,7 @@
         , types = [] :: list(resource_type_name())
         , module :: module()
         , on_create :: mf()
-        , on_destroy :: maybe(mf())
+        , on_destroy :: option(mf())
         , hidden = false :: boolean()
         , params_spec :: #{atom() => term()} %% params specs
         , title = ?descr :: descr()

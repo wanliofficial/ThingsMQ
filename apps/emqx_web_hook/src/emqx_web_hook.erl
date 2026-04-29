@@ -89,7 +89,7 @@ on_client_connect(ConnInfo = #{clientid := ClientId, username := Username, peern
     Params = #{ action => client_connect
               , node => node()
               , clientid => ClientId
-              , username => maybe(Username)
+              , username => option(Username)
               , ipaddress => iolist_to_binary(ntoa(Peerhost))
               },
     OptFields = [keepalive, proto_ver],
@@ -104,7 +104,7 @@ on_client_connack(ConnInfo = #{clientid := ClientId, username := Username, peern
     Params = #{ action => client_connack
               , node => node()
               , clientid => ClientId
-              , username => maybe(Username)
+              , username => option(Username)
               , ipaddress => iolist_to_binary(ntoa(Peerhost))
               , conn_ack => Rc
               },
@@ -120,7 +120,7 @@ on_client_connected(#{clientid := ClientId, username := Username, peerhost := Pe
     Params = #{ action => client_connected
               , node => node()
               , clientid => ClientId
-              , username => maybe(Username)
+              , username => option(Username)
               , ipaddress => iolist_to_binary(ntoa(Peerhost))
               },
     OptFields = [keepalive, proto_ver, connected_at],
@@ -137,8 +137,8 @@ on_client_disconnected(#{clientid := ClientId, username := Username}, Reason, Co
     Params = #{ action => client_disconnected
               , node => node()
               , clientid => ClientId
-              , username => maybe(Username)
-              , reason => stringfy(maybe(Reason))
+              , username => option(Username)
+              , reason => stringfy(option(Reason))
               , connected_at => maps:get(connected_at, ConnInfo)
               , disconnected_at => maps:get(disconnected_at, ConnInfo, erlang:system_time(millisecond))
               },
@@ -156,7 +156,7 @@ on_client_subscribe(#{clientid := ClientId, username := Username}, _Properties, 
           Params = #{ action => client_subscribe
                     , node => node()
                     , clientid => ClientId
-                    , username => maybe(Username)
+                    , username => option(Username)
                     , topic => Topic
                     , opts => Opts
                     },
@@ -176,7 +176,7 @@ on_client_unsubscribe(#{clientid := ClientId, username := Username}, _Properties
           Params = #{ action => client_unsubscribe
                     , node => node()
                     , clientid => ClientId
-                    , username => maybe(Username)
+                    , username => option(Username)
                     , topic => Topic
                     , opts => Opts
                     },
@@ -195,7 +195,7 @@ on_session_subscribed(#{clientid := ClientId, username := Username}, Topic, Opts
         Params = #{ action => session_subscribed
                   , node => node()
                   , clientid => ClientId
-                  , username => maybe(Username)
+                  , username => option(Username)
                   , topic => Topic
                   , opts => Opts
                   },
@@ -213,7 +213,7 @@ on_session_unsubscribed(#{clientid := ClientId, username := Username}, Topic, _O
         Params = #{ action => session_unsubscribed
                   , node => node()
                   , clientid => ClientId
-                  , username => maybe(Username)
+                  , username => option(Username)
                   , topic => Topic
                   },
         send_http_request(ClientId, Params)
@@ -230,8 +230,8 @@ on_session_terminated(#{clientid := ClientId, username := Username}, Reason, _Se
     Params = #{ action => session_terminated
               , node => node()
               , clientid => ClientId
-              , username => maybe(Username)
-              , reason => stringfy(maybe(Reason))
+              , username => option(Username)
+              , reason => stringfy(option(Reason))
               },
     send_http_request(ClientId, Params).
 
@@ -275,7 +275,7 @@ on_message_delivered(#{clientid := ClientId, username := Username},
       Params = #{ action => message_delivered
                 , node => node()
                 , clientid => ClientId
-                , username => maybe(Username)
+                , username => option(Username)
                 , from_client_id => FromClientId
                 , from_username => FromUsername
                 , topic => Message#message.topic
@@ -302,7 +302,7 @@ on_message_acked(#{clientid := ClientId, username := Username},
         Params = #{ action => message_acked
                   , node => node()
                   , clientid => ClientId
-                  , username => maybe(Username)
+                  , username => option(Username)
                   , from_client_id => FromClientId
                   , from_username => FromUsername
                   , topic => Message#message.topic
@@ -364,7 +364,7 @@ with_filter(Fun, Msg, Topic, Filter) ->
     end.
 
 parse_from(Message) ->
-    {emqx_message:from(Message), maybe(emqx_message:get_header(username, Message))}.
+    {emqx_message:from(Message), option(emqx_message:get_header(username, Message))}.
 
 encode_payload(Payload) ->
     encode_payload(Payload, application:get_env(?APP, encoding_of_payload_field, plain)).
@@ -380,8 +380,8 @@ stringfy(Term) when is_atom(Term) ->
 stringfy(Term) ->
     unicode:characters_to_binary((io_lib:format("~0p", [Term]))).
 
-maybe(undefined) -> null;
-maybe(Str) -> Str.
+option(undefined) -> null;
+option(Str) -> Str.
 
 add_optional_conn_fields(Params, OptFields, ConnInfo) ->
     maps:merge(Params, maps:with(OptFields, ConnInfo)).

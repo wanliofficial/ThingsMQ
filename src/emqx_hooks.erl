@@ -82,7 +82,7 @@
 
 -record(callback, {
           action :: action(),
-          filter :: maybe(filter()),
+          filter :: option(filter()),
           priority :: integer()
          }).
 

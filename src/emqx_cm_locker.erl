@@ -45,7 +45,7 @@ start_link() ->
 trans(ClientId, Fun) ->
     trans(ClientId, Fun, undefined).
 
--spec(trans(maybe(emqx_types:clientid()),
+-spec(trans(option(emqx_types:clientid()),
             fun(([node()])-> any()), ekka_locker:piggyback()) -> any()).
 trans(undefined, Fun, _Piggyback) ->
     Fun([]);

@@ -176,12 +176,12 @@ connection_closed(_ClientId, _ChanPid) ->
     true.
 
 %% @doc Get info of a channel.
--spec(get_chan_info(emqx_types:clientid()) -> maybe(emqx_types:infos())).
+-spec(get_chan_info(emqx_types:clientid()) -> option(emqx_types:infos())).
 get_chan_info(ClientId) ->
     with_channel(ClientId, fun(ChanPid) -> get_chan_info(ClientId, ChanPid) end).
 
 -spec(get_chan_info(emqx_types:clientid(), chan_pid())
-      -> maybe(emqx_types:infos())).
+      -> option(emqx_types:infos())).
 get_chan_info(ClientId, ChanPid) when node(ChanPid) == node() ->
     Chan = {ClientId, ChanPid},
     try ets:lookup_element(?CHAN_INFO_TAB, Chan, 2)
@@ -201,12 +201,12 @@ set_chan_info(ClientId, Info) when is_binary(ClientId) ->
     end.
 
 %% @doc Get channel's stats.
--spec(get_chan_stats(emqx_types:clientid()) -> maybe(emqx_types:stats())).
+-spec(get_chan_stats(emqx_types:clientid()) -> option(emqx_types:stats())).
 get_chan_stats(ClientId) ->
     with_channel(ClientId, fun(ChanPid) -> get_chan_stats(ClientId, ChanPid) end).
 
 -spec(get_chan_stats(emqx_types:clientid(), chan_pid())
-      -> maybe(emqx_types:stats())).
+      -> option(emqx_types:stats())).
 get_chan_stats(ClientId, ChanPid) when node(ChanPid) == node() ->
     Chan = {ClientId, ChanPid},
     try ets:lookup_element(?CHAN_INFO_TAB, Chan, 3)

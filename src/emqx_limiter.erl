@@ -23,7 +23,6 @@
         , init/4 %% XXX: Compatible with before 4.2 version
         , info/1
         , check/2
-        , update_overall_limiter/3
         , delete_overall_limiter/1
         ]).
 
@@ -60,16 +59,16 @@
 %%--------------------------------------------------------------------
 
 -spec(init(emqx_zone:zone(),
-           maybe(esockd_rate_limit:config()),
-           maybe(esockd_rate_limit:config()), policy())
-     -> maybe(limiter())).
+           option(esockd_rate_limit:config()),
+           option(esockd_rate_limit:config()), policy())
+     -> option(limiter())).
 init(Zone, PubLimit, BytesIn, Specs) ->
     Merged = maps:merge(#{conn_messages_in => PubLimit,
                           conn_bytes_in => BytesIn}, maps:from_list(Specs)),
     Filtered = maps:filter(fun(_, V) -> V /= undefined end, Merged),
     init(Zone, maps:to_list(Filtered)).
 
--spec(init(emqx_zone:zone(), policy()) -> maybe(limiter())).
+-spec(init(emqx_zone:zone(), policy()) -> option(limiter())).
 init(_Zone, []) ->
     undefined;
 init(Zone, Specs) ->
@@ -152,14 +151,6 @@ is_message_limiter(conn_messages_in) -> true;
 is_message_limiter(conn_messages_routing) -> true;
 is_message_limiter(overall_messages_routing) -> true;
 is_message_limiter(_) -> false.
-
-update_overall_limiter(Zone, Capacity, Interval) ->
-    try
-        esockd_limiter:update({Zone, overall_messages_routing}, Capacity, Interval),
-        true
-    catch _:_ ->
-        false
-    end.
 
 delete_overall_limiter(Zone) ->
     try

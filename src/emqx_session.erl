@@ -136,7 +136,7 @@
 
 -type(session() :: #session{}).
 
--type(publish() :: {maybe(emqx_types:packet_id()), emqx_types:message()}).
+-type(publish() :: {option(emqx_types:packet_id()), emqx_types:message()}).
 
 -type(pubrel() :: {pubrel, emqx_types:packet_id()}).
 

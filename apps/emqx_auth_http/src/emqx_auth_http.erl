@@ -77,7 +77,7 @@ authenticate(AuthParams =
     Retry = maps:get(retry_times, AuthParams, ?DEFAULT_RETRY_TIMES),
     request(PoolName, Method, Path, Headers, feedvar(Params, ClientInfo), Timeout, Retry).
 
--spec(is_superuser(maybe(map()), emqx_types:client()) -> boolean()).
+-spec(is_superuser(option(map()), emqx_types:client()) -> boolean()).
 is_superuser(undefined, _ClientInfo) ->
     false;
 is_superuser(SuperParams =

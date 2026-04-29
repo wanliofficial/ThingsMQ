@@ -49,7 +49,7 @@ prop_client_connect() ->
                     #{action => client_connect,
                       node => stringfy(node()),
                       clientid => maps:get(clientid, ConnInfo),
-                      username => maybe(maps:get(username, ConnInfo)),
+                      username => option(maps:get(username, ConnInfo)),
                       ipaddress => peer2addr(maps:get(peername, ConnInfo)),
                       keepalive => maps:get(keepalive, ConnInfo),
                       proto_ver => maps:get(proto_ver, ConnInfo)
@@ -67,7 +67,7 @@ prop_client_connack() ->
                      #{action => client_connack,
                        node => stringfy(node()),
                        clientid => maps:get(clientid, ConnInfo),
-                       username => maybe(maps:get(username, ConnInfo)),
+                       username => option(maps:get(username, ConnInfo)),
                        ipaddress => peer2addr(maps:get(peername, ConnInfo)),
                        keepalive => maps:get(keepalive, ConnInfo),
                        proto_ver => maps:get(proto_ver, ConnInfo),
@@ -87,7 +87,7 @@ prop_client_connected() ->
                      #{action => client_connected,
                        node => stringfy(node()),
                        clientid => maps:get(clientid, ClientInfo),
-                       username => maybe(maps:get(username, ClientInfo)),
+                       username => option(maps:get(username, ClientInfo)),
                        ipaddress => peer2addr(maps:get(peerhost, ClientInfo)),
                        keepalive => maps:get(keepalive, ConnInfo),
                        proto_ver => maps:get(proto_ver, ConnInfo),
@@ -106,7 +106,7 @@ prop_client_disconnected() ->
                      #{action => client_disconnected,
                        node => stringfy(node()),
                        clientid => maps:get(clientid, ClientInfo),
-                       username => maybe(maps:get(username, ClientInfo)),
+                       username => option(maps:get(username, ClientInfo)),
                        connected_at => maps:get(connected_at, ConnInfo),
                        disconnected_at => maps:get(disconnected_at, ConnInfo),
                        reason => stringfy(Reason)
@@ -128,7 +128,7 @@ prop_client_subscribe() ->
                          #{action => client_subscribe,
                            node => stringfy(node()),
                            clientid => maps:get(clientid, ClientInfo),
-                           username => maybe(maps:get(username, ClientInfo)),
+                           username => option(maps:get(username, ClientInfo)),
                            topic => Topic,
                            opts => Opts})
             end, Matched),
@@ -149,7 +149,7 @@ prop_client_unsubscribe() ->
                          #{action => client_unsubscribe,
                            node => stringfy(node()),
                            clientid => maps:get(clientid, ClientInfo),
-                           username => maybe(maps:get(username, ClientInfo)),
+                           username => option(maps:get(username, ClientInfo)),
                            topic => Topic,
                            opts => Opts})
             end, Matched),
@@ -167,7 +167,7 @@ prop_session_subscribed() ->
                          #{action => session_subscribed,
                            node => stringfy(node()),
                            clientid => maps:get(clientid, ClientInfo),
-                           username => maybe(maps:get(username, ClientInfo)),
+                           username => option(maps:get(username, ClientInfo)),
                            topic => Topic,
                            opts => SubOpts
                           }),
@@ -187,7 +187,7 @@ prop_session_unsubscribed() ->
                          #{action => session_unsubscribed,
                            node => stringfy(node()),
                            clientid => maps:get(clientid, ClientInfo),
-                           username => maybe(maps:get(username, ClientInfo)),
+                           username => option(maps:get(username, ClientInfo)),
                            topic => Topic
                           })
             end,
@@ -204,7 +204,7 @@ prop_session_terminated() ->
                      #{action => session_terminated,
                        node => stringfy(node()),
                        clientid => maps:get(clientid, ClientInfo),
-                       username => maybe(maps:get(username, ClientInfo)),
+                       username => option(maps:get(username, ClientInfo)),
                        reason => stringfy(Reason)
                       }),
             true
@@ -225,7 +225,7 @@ prop_message_publish() ->
                              #{action => message_publish,
                                node => stringfy(node()),
                                from_client_id => emqx_message:from(Msg),
-                               from_username => maybe(emqx_message:get_header(username, Msg)),
+                               from_username => option(emqx_message:get_header(username, Msg)),
                                topic => emqx_message:topic(Msg),
                                qos => emqx_message:qos(Msg),
                                retain => emqx_message:get_flag(retain, Msg),
@@ -251,9 +251,9 @@ prop_message_delivered() ->
                              #{action => message_delivered,
                                node => stringfy(node()),
                                clientid => maps:get(clientid, ClientInfo),
-                               username => maybe(maps:get(username, ClientInfo)),
+                               username => option(maps:get(username, ClientInfo)),
                                from_client_id => emqx_message:from(Msg),
-                               from_username => maybe(emqx_message:get_header(username, Msg)),
+                               from_username => option(emqx_message:get_header(username, Msg)),
                                topic => emqx_message:topic(Msg),
                                qos => emqx_message:qos(Msg),
                                retain => emqx_message:get_flag(retain, Msg),
@@ -279,9 +279,9 @@ prop_message_acked() ->
                              #{action => message_acked,
                                node => stringfy(node()),
                                clientid => maps:get(clientid, ClientInfo),
-                               username => maybe(maps:get(username, ClientInfo)),
+                               username => option(maps:get(username, ClientInfo)),
                                from_client_id => emqx_message:from(Msg),
-                               from_username => maybe(emqx_message:get_header(username, Msg)),
+                               from_username => option(emqx_message:get_header(username, Msg)),
                                topic => emqx_message:topic(Msg),
                                qos => emqx_message:qos(Msg),
                                retain => emqx_message:get_flag(retain, Msg),
@@ -319,8 +319,8 @@ do_teardown(_) ->
     meck:unload(ehttpc),
     meck:unload(emqx_metrics).
 
-maybe(undefined) -> null;
-maybe(T) -> T.
+option(undefined) -> null;
+option(T) -> T.
 
 peer2addr({Host, _}) ->
     list_to_binary(inet:ntoa(Host));

@@ -136,11 +136,11 @@ do_loadall() ->
     [X || X <- List, is_tuple(X)].
 
 do_load(FileName) ->
-    case catch luerl:dofile(FileName) of
-        {'EXIT', St00} ->
+    case catch luerl:dofile(FileName, luerl:init()) of
+        {lua_error, 'EXIT', St00} ->
             ?LOG(error, "Failed to load lua script ~p due to error ~p", [FileName, St00]),
             error;
-        {_Ret, St0=#luerl{}} ->
+        {ok, _Ret, St0=#luerl{}} ->
             case catch luerl:call_function([register_hook], [], St0) of
                 {'EXIT', St1} ->
                     ?LOG(error, "Failed to execute register_hook function in lua script ~p, which has syntax error, St1=~p", [FileName, St1]),

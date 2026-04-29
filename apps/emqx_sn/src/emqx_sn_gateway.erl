@@ -66,14 +66,14 @@
 -compile(nowarn_export_all).
 -endif.
 
--type(maybe(T) :: T | undefined).
+-type(option(T) :: T | undefined).
 
 -type(pending_msgs() :: #{integer() => [#mqtt_sn_message{}]}).
 
 -record(will_msg, {retain = false  :: boolean(),
                    qos    = ?QOS_0 :: emqx_mqtt_types:qos(),
-                   topic           :: maybe(binary()),
-                   payload         :: maybe(binary())
+                   topic           :: option(binary()),
+                   payload         :: option(binary())
                   }).
 
 -record(state, {gwid                 :: integer(),
@@ -82,16 +82,16 @@
                 sockstate            :: emqx_types:sockstate(),
                 sockname             :: {inet:ip_address(), inet:port()},
                 peername             :: {inet:ip_address(), inet:port()},
-                channel              :: maybe(emqx_channel:channel()),
-                clientid             :: maybe(binary()),
-                username             :: maybe(binary()),
-                password             :: maybe(binary()),
-                will_msg             :: maybe(#will_msg{}),
-                keepalive_interval   :: maybe(integer()),
+                channel              :: option(emqx_channel:channel()),
+                clientid             :: option(binary()),
+                username             :: option(binary()),
+                password             :: option(binary()),
+                will_msg             :: option(#will_msg{}),
+                keepalive_interval   :: option(integer()),
                 connpkt              :: term(),
                 asleep_timer         :: tuple(),
                 enable_stats         :: boolean(),
-                stats_timer          :: maybe(reference()),
+                stats_timer          :: option(reference()),
                 idle_timeout         :: integer(),
                 enable_qos3 = false  :: boolean(),
                 has_pending_pingresp = false :: boolean(),

@@ -129,7 +129,7 @@ is_running(Node) ->
     end.
 
 %% @doc Get environment
--spec(get_env(Key :: atom()) -> maybe(term())).
+-spec(get_env(Key :: atom()) -> option(term())).
 get_env(Key) ->
     get_env(Key, undefined).
 

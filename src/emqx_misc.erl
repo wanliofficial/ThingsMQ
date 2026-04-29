@@ -110,8 +110,24 @@ ipv6_probe(Opts) ->
     ipv6_probe(Opts, true).
 
 ipv6_probe(Opts, Ipv6Probe) when is_boolean(Ipv6Probe) orelse is_integer(Ipv6Probe) ->
-    Bool = try gen_tcp:ipv6_probe()
-           catch _ : _ -> false end,
+    Bool =
+        case inet:getifaddrs() of
+            {ok, Ifs} ->
+                lists:any(
+                    fun({_Name, Props}) ->
+                        lists:any(
+                            fun
+                                ({addr, {_, _, _, _, _, _, _, _}}) -> true;
+                                (_) -> false
+                            end,
+                            Props
+                        )
+                    end,
+                    Ifs
+                );
+            {error, _} ->
+                false
+        end,
     ipv6_probe(Bool, Opts, Ipv6Probe).
 
 ipv6_probe(false, Opts, _) -> Opts;
@@ -128,8 +144,8 @@ merge_opts(Defaults, Options) ->
       end, Defaults, Options).
 
 %% @doc Apply a function to a maybe argument.
--spec(maybe_apply(fun((maybe(A)) -> maybe(A)), maybe(A))
-      -> maybe(A) when A :: any()).
+-spec(maybe_apply(fun((option(A)) -> option(A)), option(A))
+      -> option(A) when A :: any()).
 maybe_apply(_Fun, undefined) -> undefined;
 maybe_apply(Fun, Arg) when is_function(Fun) ->
     erlang:apply(Fun, [Arg]).
@@ -187,7 +203,7 @@ start_timer(Interval, Msg) ->
 start_timer(Interval, Dest, Msg) ->
     erlang:start_timer(erlang:ceil(Interval), Dest, Msg).
 
--spec(cancel_timer(maybe(reference())) -> ok).
+-spec(cancel_timer(option(reference())) -> ok).
 cancel_timer(Timer) when is_reference(Timer) ->
     case erlang:cancel_timer(Timer) of
         false ->

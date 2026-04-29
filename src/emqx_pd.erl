@@ -42,7 +42,7 @@ get_counters(Keys) when is_list(Keys) ->
 get_counter(Key) ->
     case get(Key) of undefined -> 0; Cnt -> Cnt end.
 
--spec(inc_counter(key(), number()) -> maybe(number())).
+-spec(inc_counter(key(), number()) -> option(number())).
 inc_counter(Key, Inc) ->
     put(Key, get_counter(Key) + Inc).
 

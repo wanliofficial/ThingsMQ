@@ -59,7 +59,7 @@
 -record(update, {name, countdown, interval, func}).
 
 -record(state, {
-          timer   :: maybe(reference()),
+          timer   :: option(reference()),
           updates :: [#update{}],
           tick_ms :: timeout()
          }).
@@ -148,7 +148,7 @@ getstats() ->
     end.
 
 %% @doc Get stats by name.
--spec(getstat(atom()) -> maybe(non_neg_integer())).
+-spec(getstat(atom()) -> option(non_neg_integer())).
 getstat(Name) ->
     case ets:lookup(?TAB, Name) of
         [{Name, Val}] -> Val;
