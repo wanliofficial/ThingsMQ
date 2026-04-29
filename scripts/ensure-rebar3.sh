@@ -30,6 +30,8 @@ case ${OTP_VSN} in
         ;;
 esac
 
+echo "OTP Version: ${OTP_VSN}, using rebar3 version: ${VERSION}"
+
 # ensure dir
 cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 

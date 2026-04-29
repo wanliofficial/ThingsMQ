@@ -94,7 +94,7 @@ plugins(HasElixir) ->
     , {er_coap_client, {git, "https://github.com/emqx/er_coap_client", {tag, "v1.0.4"}}}
       %% emqx main project does not require port-compiler
       %% pin at root level for deterministic
-    , {pc, {git, "https://github.com/emqx/port_compiler.git", {tag, "v1.11.1"}}}
+    , {pc, {git, "https://github.com/blt/port_compiler.git", {tag, "v1.15.0"}}}
     | [ {rebar_mix, "v0.4.0"} || HasElixir ]
     ]
     %% test plugins are concatenated to default profile plugins
