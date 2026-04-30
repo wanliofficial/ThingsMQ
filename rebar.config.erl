@@ -160,8 +160,6 @@ profiles() ->
 %% PkgType: bin | pkg
 relx(Vsn, RelType, PkgType) ->
     IsEnterprise = is_enterprise(),
-    io:format("overlay_vars RAW: ~p~n", [overlay_vars(RelType, PkgType, IsEnterprise)]),
-    io:format("USE EE: ~p~n", [IsEnterprise]),
     [ {include_src,false}
     , {include_erts, true}
     , {extended_start_script,false}

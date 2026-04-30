@@ -53,5 +53,5 @@ if [ -f 'rebar3' ] && [ "$(version)" = "$VERSION" ]; then
     exit 0
 fi
 
-download
+# download # 直接使用根目录下的rebar3即可，是在emqx/rebar3 targ为 3.18.0-emqx-1的源码，修改若干代码，通过erlang 27编译而来
 chmod +x ./rebar3
