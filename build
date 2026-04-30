@@ -25,7 +25,7 @@ SYSTEM="${SYSTEM:-$(./scripts/get-distro.sh)}"
 ##
 if [ "$(uname -s)" = 'Linux' ]; then
     case "${SYSTEM:-}" in
-        ubuntu*|debian*|raspbian*)
+        ubuntu*|debian*|raspbian*|deepin*)
             PKGERDIR='deb'
             ;;
         *)
@@ -92,7 +92,7 @@ make_relup() {
         for BASE_VSN in $(relup_db base-vsns "$PKG_VSN"); do
             OTP_BASE=$(relup_db otp-vsn-for "$BASE_VSN")
             if [[ "$OTP_BASE" != "$OTP_VSN" ]]; then
-              OTP_CHANGED='yes'
+                OTP_CHANGED='yes'
             fi
             zip_file="_upgrade_base/${PROFILE}-$(env OTP_VSN="$OTP_BASE" PKG_VSN="$BASE_VSN" ./scripts/pkg-full-vsn.sh 'vsn_exact').zip"
             if [ ! -d "$releases_dir/$BASE_VSN" ]; then
@@ -362,6 +362,7 @@ case "$ARTIFACT" in
             log "Skipped making deb/rpm package for $SYSTEM"
             exit 0
         fi
+        echo "Building package for $SYSTEM in ${PKGERDIR} format"
         EMQX_REL="$(pwd)" make -C "deploy/packages/${PKGERDIR}" clean
         EMQX_REL="$(pwd)" EMQX_BUILD="${PROFILE}" SYSTEM="${SYSTEM}" make -C "deploy/packages/${PKGERDIR}"
         ;;
