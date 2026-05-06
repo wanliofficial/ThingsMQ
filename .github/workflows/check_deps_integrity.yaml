@@ -1,0 +1,46 @@
+name: Check integrity of rebar and mix dependencies
+
+on:
+  workflow_call:
+    inputs:
+      builder:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  check_deps_integrity:
+    runs-on: ${{ endsWith(github.repository, '/emqx') && 'ubuntu-22.04' || fromJSON('["self-hosted","ephemeral","linux","x64"]') }}
+    container: ${{ inputs.builder }}
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - run: make ensure-rebar3
+      - run: ./scripts/check-deps-integrity.escript
+      - name: Setup mix
+        env:
+          MIX_ENV: emqx-enterprise
+          PROFILE: emqx-enterprise
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+      - run: ./scripts/check-elixir-deps-discrepancies.exs
+        env:
+          MIX_ENV: emqx-enterprise
+          PROFILE: emqx-enterprise
+      - run: ./scripts/check-elixir-applications.exs
+        env:
+          MIX_ENV: emqx-enterprise
+          PROFILE: emqx-enterprise
+      - name: Upload produced lock files
+        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        if: failure()
+        with:
+          name: produced_lock_files
+          path: |
+            mix.lock
+            rebar.lock
+          retention-days: 1
