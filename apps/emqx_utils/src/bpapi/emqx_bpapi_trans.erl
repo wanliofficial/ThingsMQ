@@ -83,11 +83,14 @@ finalize(Forms, S) ->
     log("Meta fun:~n~p", [AST]),
     Attrs ++ [mk_export()] ++ [AST | Funcs].
 
+const(Value, _Meta) ->
+    erl_parse:abstract(Value).
+
 mk_meta_fun(#s{api = API, version = Vsn, targets = Targets}) ->
     Line = 0,
     Calls = [{From, To} || {call, From, To} <- Targets],
     Casts = [{From, To} || {cast, From, To} <- Targets],
-    Ret = typerefl_quote:const(Line, #{
+    Ret = const(Line, #{
         api => API,
         version => Vsn,
         calls => Calls,

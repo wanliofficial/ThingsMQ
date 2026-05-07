@@ -27,7 +27,7 @@
 
 -export([
     init/1,
-    format_status/2,
+    format_status/1,
     handle_cast/2,
     handle_call/3,
     handle_info/2,
@@ -114,7 +114,7 @@ handle_call(?DO_IT, _From, State) ->
 handle_call(_Call, _From, State) ->
     {noreply, State}.
 
-format_status(_Opt, [_Pdict, _S]) ->
+format_status([_Pdict, _S]) ->
     ok.
 
 code_change(_OldVsn, State, _Extra) ->

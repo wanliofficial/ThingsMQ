@@ -22,7 +22,7 @@
 -import(emqx_dashboard_SUITE, [auth_header_/0]).
 
 -include_lib("eunit/include/eunit.hrl").
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 
 -define(SERVER, "http://127.0.0.1:18083").
 -define(BASE_PATH, "/api/v5").

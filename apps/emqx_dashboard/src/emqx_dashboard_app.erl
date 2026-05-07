@@ -23,7 +23,7 @@
     stop/1
 ]).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 
 start(_StartType, _StartArgs) ->
     ok = mria_rlog:wait_for_shards([?DASHBOARD_SHARD], infinity),

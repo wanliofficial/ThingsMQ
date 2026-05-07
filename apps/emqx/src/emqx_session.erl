@@ -43,11 +43,12 @@
 %% MQTT Session
 -module(emqx_session).
 
--include("logger.hrl").
--include("types.hrl").
--include("emqx.hrl").
--include("emqx_session.hrl").
--include("emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_session.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -ifdef(TEST).
 -compile(export_all).
@@ -135,7 +136,7 @@
 -type custom_timer_name() :: atom().
 
 -type message() :: emqx_types:message().
--type publish() :: {maybe(emqx_types:packet_id()), emqx_types:message()}.
+-type publish() :: {option(emqx_types:packet_id()), emqx_types:message()}.
 -type pubrel() :: {pubrel, emqx_types:packet_id()}.
 -type reply() :: publish() | pubrel().
 -type replies() :: [reply()] | reply().

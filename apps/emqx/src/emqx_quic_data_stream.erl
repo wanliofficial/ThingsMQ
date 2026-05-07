@@ -27,8 +27,9 @@
 
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 -include_lib("quicer/include/quicer.hrl").
--include("emqx_mqtt.hrl").
--include("logger.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 %% Connection Callbacks
 -export([

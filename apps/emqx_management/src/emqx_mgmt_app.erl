@@ -25,7 +25,7 @@
     stop/1
 ]).
 
--include("emqx_mgmt.hrl").
+-include_lib("emqx_management/include/emqx_mgmt.hrl").
 
 start(_Type, _Args) ->
     case emqx_mgmt_auth:init_bootstrap_file() of

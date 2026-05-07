@@ -16,7 +16,7 @@
 
 -module(emqx_exhook_metrics).
 
--include("emqx_exhook.hrl").
+-include_lib("emqx_exhook/include/emqx_exhook.hrl").
 
 %% API
 -export([

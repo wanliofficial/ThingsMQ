@@ -17,12 +17,13 @@
 %% MQTT Channel
 -module(emqx_channel).
 
--include("emqx.hrl").
--include("emqx_channel.hrl").
--include("emqx_mqtt.hrl").
--include("emqx_access_control.hrl").
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_channel.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_access_control.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 
@@ -84,21 +85,21 @@
     %% MQTT ClientInfo
     clientinfo :: emqx_types:clientinfo(),
     %% MQTT Session
-    session :: maybe(emqx_session:t()),
+    session :: option(emqx_session:t()),
     %% Keepalive
-    keepalive :: maybe(emqx_keepalive:keepalive()),
+    keepalive :: option(emqx_keepalive:keepalive()),
     %% MQTT Will Msg
-    will_msg :: maybe(emqx_types:message()),
+    will_msg :: option(emqx_types:message()),
     %% MQTT Topic Aliases
     topic_aliases :: emqx_types:topic_aliases(),
     %% MQTT Topic Alias Maximum
-    alias_maximum :: maybe(map()),
+    alias_maximum :: option(map()),
     %% Authentication Data Cache
-    auth_cache :: maybe(map()),
+    auth_cache :: option(map()),
     %% Quota checkers
     quota :: emqx_limiter_container:container(),
     %% Timers
-    timers :: #{atom() => disabled | maybe(reference())},
+    timers :: #{atom() => disabled | option(reference())},
     %% Conn State
     conn_state :: conn_state(),
     %% Takeover

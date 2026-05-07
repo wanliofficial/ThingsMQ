@@ -27,7 +27,7 @@
     vsn_compare/2
 ]).
 
--include("emqx_release.hrl").
+-include_lib("emqx/include/emqx_release.hrl").
 
 -define(EMQX_DESCS, #{
     ee => "EMQX Enterprise",

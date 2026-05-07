@@ -16,7 +16,7 @@
 
 -module(emqx_exhook_server).
 
--include("emqx_exhook.hrl").
+-include_lib("emqx_exhook/include/emqx_exhook.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("emqx/include/emqx_hooks.hrl").
 

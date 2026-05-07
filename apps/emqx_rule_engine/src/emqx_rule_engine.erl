@@ -20,7 +20,7 @@
 -behaviour(emqx_config_handler).
 -behaviour(emqx_config_backup).
 
--include("rule_engine.hrl").
+-include_lib("emqx_rule_engine/include/rule_engine.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("stdlib/include/qlc.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").

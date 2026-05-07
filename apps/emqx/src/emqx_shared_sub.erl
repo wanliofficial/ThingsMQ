@@ -18,11 +18,11 @@
 
 -behaviour(gen_server).
 
--include("emqx_schema.hrl").
--include("emqx.hrl").
--include("emqx_mqtt.hrl").
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 %% Mnesia bootstrap
 -export([mnesia/1]).

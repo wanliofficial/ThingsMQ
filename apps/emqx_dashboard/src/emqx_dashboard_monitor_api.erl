@@ -16,7 +16,7 @@
 
 -module(emqx_dashboard_monitor_api).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 -include_lib("typerefl/include/types.hrl").
 -include_lib("hocon/include/hocon_types.hrl").
 

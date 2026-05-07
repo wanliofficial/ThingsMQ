@@ -16,8 +16,8 @@
 
 -module(emqx_cm_locker).
 
--include("emqx.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/types.hrl").
 
 -export([start_link/0]).
 
@@ -32,7 +32,7 @@ start_link() ->
     ekka_locker:start_link(?MODULE).
 
 -spec trans(
-    maybe(emqx_types:clientid()),
+    option(emqx_types:clientid()),
     fun(([node()]) -> any())
 ) -> any().
 trans(undefined, Fun) ->

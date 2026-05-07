@@ -18,7 +18,7 @@
 
 -behaviour(emqx_retainer).
 
--include("emqx_retainer.hrl").
+-include_lib("emqx_retainer/include/emqx_retainer.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 -include_lib("stdlib/include/ms_transform.hrl").

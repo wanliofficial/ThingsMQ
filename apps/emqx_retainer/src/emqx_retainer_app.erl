@@ -18,7 +18,7 @@
 
 -behaviour(application).
 
--include("emqx_retainer.hrl").
+-include_lib("emqx_retainer/include/emqx_retainer.hrl").
 
 -export([
     start/2,

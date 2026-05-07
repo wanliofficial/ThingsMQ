@@ -18,7 +18,7 @@
 
 -behaviour(application).
 
--include("emqx_exhook.hrl").
+-include_lib("emqx_exhook/include/emqx_exhook.hrl").
 
 -export([
     start/2,

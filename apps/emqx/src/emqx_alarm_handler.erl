@@ -18,8 +18,8 @@
 
 -behaviour(gen_event).
 
--include("emqx.hrl").
--include("logger.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
 -include_lib("lc/include/lc.hrl").
 
 %% gen_event callbacks

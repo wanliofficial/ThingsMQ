@@ -16,10 +16,10 @@
 
 -module(emqx_mountpoint).
 
--include("emqx.hrl").
--include("emqx_mqtt.hrl").
--include("emqx_placeholder.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_placeholder.hrl").
+-include_lib("emqx/include/types.hrl").
 
 -export([
     mount/2,
@@ -32,7 +32,7 @@
 
 -type mountpoint() :: binary().
 
--spec mount(maybe(mountpoint()), Any) -> Any when
+-spec mount(option(mountpoint()), Any) -> Any when
     Any ::
         emqx_types:topic()
         | emqx_types:share()
@@ -47,7 +47,7 @@ mount(MountPoint, Msg = #message{topic = Topic}) when is_binary(Topic) ->
 mount(MountPoint, TopicFilters) when is_list(TopicFilters) ->
     [{prefix_maybe_share(MountPoint, Topic), SubOpts} || {Topic, SubOpts} <- TopicFilters].
 
--spec prefix_maybe_share(maybe(mountpoint()), Any) -> Any when
+-spec prefix_maybe_share(option(mountpoint()), Any) -> Any when
     Any ::
         emqx_types:topic()
         | emqx_types:share().
@@ -60,7 +60,7 @@ prefix_maybe_share(MountPoint, #share{group = Group, topic = Topic}) when
 ->
     #share{group = Group, topic = prefix_maybe_share(MountPoint, Topic)}.
 
--spec unmount(maybe(mountpoint()), Any) -> Any when
+-spec unmount(option(mountpoint()), Any) -> Any when
     Any ::
         emqx_types:topic()
         | emqx_types:share()
@@ -84,7 +84,7 @@ unmount_maybe_share(MountPoint, TopicFilter = #share{topic = Topic}) when
 ->
     TopicFilter#share{topic = unmount_maybe_share(MountPoint, Topic)}.
 
--spec replvar(maybe(mountpoint()), map()) -> maybe(mountpoint()).
+-spec replvar(option(mountpoint()), map()) -> option(mountpoint()).
 replvar(undefined, _Vars) ->
     undefined;
 replvar(MountPoint, Vars) ->

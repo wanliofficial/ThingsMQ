@@ -37,7 +37,7 @@
     handle_info/2,
     terminate/2,
     code_change/3,
-    format_status/2
+    format_status/1
 ]).
 
 -export([
@@ -299,10 +299,9 @@ code_change(_OldVsn, State, _Extra) ->
 %% @end
 %%--------------------------------------------------------------------
 -spec format_status(
-    Opt :: normal | terminate,
     Status :: list()
 ) -> Status :: term().
-format_status(_Opt, Status) ->
+format_status(Status) ->
     Status.
 
 %%--------------------------------------------------------------------

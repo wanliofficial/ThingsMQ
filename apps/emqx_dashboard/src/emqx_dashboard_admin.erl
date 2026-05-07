@@ -18,7 +18,7 @@
 
 -module(emqx_dashboard_admin).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("stdlib/include/ms_transform.hrl").
 

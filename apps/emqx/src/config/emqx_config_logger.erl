@@ -23,7 +23,8 @@
 -export([post_config_update/5]).
 -export([filter_audit/2]).
 
--include("logger.hrl").
+-include_lib("emqx/include/logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
 
 -define(LOG, [log]).
 

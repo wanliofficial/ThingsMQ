@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 -module(emqx_mgmt_auth).
--include_lib("emqx_mgmt.hrl").
+-include_lib("emqx_management/include/emqx_mgmt.hrl").
 -include_lib("emqx/include/emqx.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("emqx_dashboard/include/emqx_dashboard_rbac.hrl").

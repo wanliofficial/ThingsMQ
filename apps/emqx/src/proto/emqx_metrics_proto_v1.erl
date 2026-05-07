@@ -24,7 +24,7 @@
     get_metrics/4
 ]).
 
--include("bpapi.hrl").
+-include_lib("emqx/include/bpapi.hrl").
 
 introduced_in() ->
     "5.1.0".

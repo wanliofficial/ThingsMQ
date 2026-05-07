@@ -416,7 +416,7 @@ check_parameter(
 check_parameter([], _Bindings, _QueryStr, _Module, NewBindings, NewQueryStr) ->
     {NewBindings, NewQueryStr};
 check_parameter([{Name, Type} | Spec], Bindings, QueryStr, Module, BindingsAcc, QueryStrAcc) ->
-    Schema = ?INIT_SCHEMA#{roots => [{Name, Type}]},
+    Schema = maps:merge(?INIT_SCHEMA, #{roots => [{Name, Type}]}),
     case hocon_schema:field_schema(Type, in) of
         path ->
             Option = #{atom_key => true},
@@ -437,7 +437,7 @@ check_request_body(#{body := Body}, Schema, Module, CheckFun, true) ->
             ?REF(StructName) -> ?R_REF(Module, StructName);
             _ -> Type0
         end,
-    NewSchema = ?INIT_SCHEMA#{roots => [{root, Type}]},
+    NewSchema = maps:merge(?INIT_SCHEMA, #{roots => [{root, Type}]}),
     Option = #{required => false},
     #{<<"root">> := NewBody} = CheckFun(NewSchema, #{<<"root">> => Body}, Option),
     NewBody;
@@ -451,7 +451,7 @@ check_request_body(#{body := Body}, Schema, Module, CheckFun, true) ->
 check_request_body(#{body := Body}, Spec, _Module, CheckFun, false) when is_list(Spec) ->
     lists:foldl(
         fun({Name, Type}, Acc) ->
-            Schema = ?INIT_SCHEMA#{roots => [{Name, Type}]},
+            Schema = maps:merge(?INIT_SCHEMA, #{roots => [{Name, Type}]}),
             maps:merge(Acc, CheckFun(Schema, Body, #{}))
         end,
         #{},

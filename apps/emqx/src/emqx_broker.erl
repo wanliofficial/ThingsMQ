@@ -18,12 +18,12 @@
 
 -behaviour(gen_server).
 
--include("emqx.hrl").
--include("emqx_router.hrl").
-
--include("logger.hrl").
--include("types.hrl").
--include("emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_router.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -export([start_link/2]).
 
@@ -438,7 +438,7 @@ subscribed(SubId, Topic) when ?IS_SUBID(SubId) ->
     SubPid = emqx_broker_helper:lookup_subpid(SubId),
     ets:member(?SUBOPTION, {Topic, SubPid}).
 
--spec get_subopts(pid(), emqx_types:topic() | emqx_types:share()) -> maybe(emqx_types:subopts()).
+-spec get_subopts(pid(), emqx_types:topic() | emqx_types:share()) -> option(emqx_types:subopts()).
 get_subopts(SubPid, Topic) when is_pid(SubPid), ?IS_TOPIC(Topic) ->
     lookup_value(?SUBOPTION, {Topic, SubPid});
 get_subopts(SubId, Topic) when ?IS_SUBID(SubId) ->

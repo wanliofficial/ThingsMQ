@@ -16,9 +16,9 @@
 
 -module(emqx).
 
--include("emqx.hrl").
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
 
 -elvis([{elvis_style, god_modules, disable}]).
 

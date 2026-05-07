@@ -20,7 +20,7 @@
 -behaviour(gen_server).
 -behaviour(emqx_config_backup).
 
--include("emqx_exhook.hrl").
+-include_lib("emqx_exhook/include/emqx_exhook.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 

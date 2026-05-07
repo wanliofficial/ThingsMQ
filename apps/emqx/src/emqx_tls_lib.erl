@@ -47,7 +47,8 @@
 %% ssl:tls_version/0 is not exported.
 -type tls_version() :: tlsv1 | 'tlsv1.1' | 'tlsv1.2' | 'tlsv1.3'.
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -define(IS_TRUE(Val), ((Val =:= true) orelse (Val =:= <<"true">>))).
 -define(IS_FALSE(Val), ((Val =:= false) orelse (Val =:= <<"false">>))).

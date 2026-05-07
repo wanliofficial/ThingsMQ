@@ -27,7 +27,7 @@
     get_enabled_trace/0
 ]).
 
--include("emqx_trace.hrl").
+-include_lib("emqx/include/emqx_trace.hrl").
 
 %%================================================================================
 %% API functions

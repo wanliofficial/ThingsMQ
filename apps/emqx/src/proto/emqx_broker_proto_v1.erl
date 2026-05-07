@@ -27,8 +27,8 @@
     list_subscriptions_via_topic/2
 ]).
 
--include("bpapi.hrl").
--include("emqx.hrl").
+-include_lib("emqx/include/bpapi.hrl").
+-include_lib("emqx/include/emqx.hrl").
 
 introduced_in() ->
     "5.0.0".

@@ -24,7 +24,8 @@
 
 -behaviour(quicer_remote_stream).
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 %% emqx transport Callbacks
 -export([

@@ -16,7 +16,7 @@
 
 -module(emqx_auth_ldap_app).
 
--include("emqx_auth_ldap.hrl").
+-include_lib("emqx_auth_ldap/include/emqx_auth_ldap.hrl").
 
 -behaviour(application).
 

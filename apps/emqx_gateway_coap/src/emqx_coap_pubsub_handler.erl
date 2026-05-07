@@ -83,7 +83,7 @@ get_sub_opts(Msg) ->
             maps:merge(?SUBOPTS, SubOpts);
         _ ->
             CfgType = emqx_conf:get([gateway, coap, subscribe_qos], ?QOS_0),
-            maps:merge(?SUBOPTS#{qos => type_to_qos(CfgType, Msg)}, SubOpts)
+            maps:merge(?SUBOPTS, #{qos => type_to_qos(CfgType, Msg)}, SubOpts)
     end.
 
 parse_sub_opts(<<"qos">>, V, Opts) ->

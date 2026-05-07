@@ -16,7 +16,7 @@
 
 -module(emqx_router_utils).
 
--include("emqx.hrl").
+-include_lib("emqx/include/emqx.hrl").
 
 -export([
     delete_trie_route/2,

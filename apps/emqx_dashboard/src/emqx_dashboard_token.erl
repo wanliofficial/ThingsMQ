@@ -16,7 +16,7 @@
 
 -module(emqx_dashboard_token).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 
 -export([
     sign/2,

@@ -19,9 +19,10 @@
 -behaviour(gen_server).
 -behaviour(emqx_db_backup).
 
--include("emqx.hrl").
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 
 %% Mnesia bootstrap

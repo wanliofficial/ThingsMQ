@@ -18,10 +18,11 @@
 
 -behaviour(gen_server).
 
--include("emqx.hrl").
--include("types.hrl").
--include("logger.hrl").
--include("emqx_hooks.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
+-include_lib("emqx/include/emqx_hooks.hrl").
 
 -export([
     start_link/0,
@@ -65,8 +66,8 @@
 -import(emqx_utils, [start_timer/2]).
 
 -record(state, {
-    heartbeat :: maybe(reference()),
-    ticker :: maybe(reference()),
+    heartbeat :: option(reference()),
+    ticker :: option(reference()),
     sysdescr :: binary()
 }).
 

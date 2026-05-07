@@ -24,7 +24,7 @@
     current_rate/1
 ]).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 -include_lib("emqx/include/bpapi.hrl").
 
 introduced_in() ->

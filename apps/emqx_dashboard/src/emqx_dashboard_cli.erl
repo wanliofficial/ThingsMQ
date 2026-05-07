@@ -16,7 +16,7 @@
 
 -module(emqx_dashboard_cli).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 
 -export([
     load/0,

@@ -46,11 +46,11 @@
 
 -behaviour(emqx_session).
 
--include("emqx.hrl").
--include("emqx_mqtt.hrl").
--include("emqx_session_mem.hrl").
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_session_mem.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
 
 -ifdef(TEST).
 -compile(export_all).

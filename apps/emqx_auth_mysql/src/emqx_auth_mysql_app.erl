@@ -16,7 +16,7 @@
 
 -module(emqx_auth_mysql_app).
 
--include("emqx_auth_mysql.hrl").
+-include_lib("emqx_auth_mysql/include/emqx_auth_mysql.hrl").
 
 -behaviour(application).
 

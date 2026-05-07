@@ -16,7 +16,8 @@
 
 -module(emqx_hookpoints).
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -type callback_result() :: stop | any().
 -type fold_callback_result(Acc) :: {stop, Acc} | {ok, Acc} | stop | any().

@@ -18,11 +18,11 @@
 
 -behaviour(emqx_session).
 
--include("emqx.hrl").
+-include_lib("emqx/include/emqx.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 -include_lib("stdlib/include/ms_transform.hrl").
 
--include("emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
 
 -include("emqx_persistent_session_ds.hrl").
 

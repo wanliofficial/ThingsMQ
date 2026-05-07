@@ -20,7 +20,7 @@
 -include_lib("emqx/include/emqx.hrl").
 -include_lib("typerefl/include/types.hrl").
 
--include("emqx_mgmt.hrl").
+-include_lib("emqx_management/include/emqx_mgmt.hrl").
 
 -behaviour(minirest_api).
 

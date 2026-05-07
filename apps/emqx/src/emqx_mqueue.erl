@@ -49,9 +49,9 @@
 
 -module(emqx_mqueue).
 
--include("emqx.hrl").
--include("types.hrl").
--include("emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
 
 -export([
     init/1,
@@ -189,7 +189,7 @@ stats(#mqueue{max_len = MaxLen, dropped = Dropped} = MQ) ->
     [{len, len(MQ)}, {max_len, MaxLen}, {dropped, Dropped}].
 
 %% @doc Enqueue a message.
--spec in(message(), mqueue()) -> {maybe(message()), mqueue()}.
+-spec in(message(), mqueue()) -> {option(message()), mqueue()}.
 in(Msg = #message{qos = ?QOS_0}, MQ = #mqueue{store_qos0 = false}) ->
     {_Dropped = Msg, MQ};
 in(

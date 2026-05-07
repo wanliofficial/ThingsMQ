@@ -18,7 +18,7 @@
 
 -behaviour(emqx_bpapi).
 
--include("bpapi.hrl").
+-include_lib("emqx/include/bpapi.hrl").
 
 -export([
     introduced_in/0,

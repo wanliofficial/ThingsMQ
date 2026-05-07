@@ -16,9 +16,10 @@
 
 -module(emqx_access_control).
 
--include("emqx.hrl").
--include("emqx_access_control.hrl").
--include("logger.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_access_control.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -export([
     authenticate/1,

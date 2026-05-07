@@ -37,15 +37,17 @@
 
 -define(node_field(IsRequired), ?node_field(IsRequired, #{})).
 -define(node_field(IsRequired, Meta),
-    {node, ?HOCON(binary(), Meta#{desc => "Node name", required => IsRequired})}
+    {node, ?HOCON(binary(), maps:merge(Meta, #{
+            desc => "Node name", required => IsRequired
+        }))}
 ).
 -define(filename_field(IsRequired), ?filename_field(IsRequired, #{})).
 -define(filename_field(IsRequired, Meta),
     {filename,
-        ?HOCON(binary(), Meta#{
+        ?HOCON(binary(), maps:merge(Meta, #{
             desc => "Data backup file name",
             required => IsRequired
-        })}
+        }))}
 ).
 
 api_spec() ->

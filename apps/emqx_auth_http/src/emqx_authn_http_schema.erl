@@ -27,7 +27,7 @@
     namespace/0
 ]).
 
--include("emqx_auth_http.hrl").
+-include_lib("emqx_auth_http/include/emqx_auth_http.hrl").
 -include_lib("emqx_auth/include/emqx_authn.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 

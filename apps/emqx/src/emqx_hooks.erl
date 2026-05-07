@@ -18,8 +18,9 @@
 
 -behaviour(gen_server).
 
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("stdlib/include/ms_transform.hrl").
 
 -export([
@@ -76,7 +77,7 @@
 
 -record(callback, {
     action :: action(),
-    filter :: maybe(filter()),
+    filter :: option(filter()),
     priority :: integer()
 }).
 

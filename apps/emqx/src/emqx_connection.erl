@@ -23,10 +23,11 @@
 %% for WebSocket @see emqx_ws_connection.erl
 -module(emqx_connection).
 
--include("emqx.hrl").
--include("emqx_mqtt.hrl").
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 
 -ifdef(TEST).
@@ -99,13 +100,13 @@
     %% Channel State
     channel :: emqx_channel:channel(),
     %% GC State
-    gc_state :: maybe(emqx_gc:gc_state()),
+    gc_state :: option(emqx_gc:gc_state()),
     %% Stats Timer
-    stats_timer :: disabled | maybe(reference()),
+    stats_timer :: disabled | option(reference()),
     %% Idle Timeout
     idle_timeout :: integer() | infinity,
     %% Idle Timer
-    idle_timer :: maybe(reference()),
+    idle_timer :: option(reference()),
     %% Zone name
     zone :: atom(),
     %% Listener Type and Name
@@ -121,7 +122,7 @@
     limiter_timer :: undefined | reference(),
 
     %% QUIC conn owner pid if in use.
-    quic_conn_pid :: maybe(pid())
+    quic_conn_pid :: option(pid())
 }).
 
 -record(retry, {

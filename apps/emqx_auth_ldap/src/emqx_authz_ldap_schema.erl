@@ -16,7 +16,7 @@
 
 -module(emqx_authz_ldap_schema).
 
--include("emqx_auth_ldap.hrl").
+-include_lib("emqx_auth_ldap/include/emqx_auth_ldap.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 -behaviour(emqx_authz_schema).

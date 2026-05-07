@@ -31,7 +31,7 @@
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("common_test/include/ct.hrl").
 -include_lib("emqx/include/emqx.hrl").
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 
 -define(CONTENT_TYPE, "application/x-www-form-urlencoded").
 

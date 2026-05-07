@@ -19,9 +19,10 @@
 
 -ifndef(BUILD_WITHOUT_QUIC).
 
--include("logger.hrl").
--include_lib("quicer/include/quicer.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
 -include_lib("emqx/include/emqx_quic.hrl").
+-include_lib("emqx/include/logger.hrl").
+-include_lib("quicer/include/quicer.hrl").
 
 -behaviour(quicer_connection).
 

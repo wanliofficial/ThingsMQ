@@ -16,7 +16,7 @@
 
 -module(emqx_authz_http_schema).
 
--include("emqx_auth_http.hrl").
+-include_lib("emqx_auth_http/include/emqx_auth_http.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 -behaviour(emqx_authz_schema).

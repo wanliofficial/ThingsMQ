@@ -16,7 +16,7 @@
 
 -module(emqx_mgmt).
 
--include("emqx_mgmt.hrl").
+-include_lib("emqx_management/include/emqx_mgmt.hrl").
 -include_lib("emqx/include/emqx_cm.hrl").
 
 -elvis([{elvis_style, invalid_dynamic_call, disable}]).

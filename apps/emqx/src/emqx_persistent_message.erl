@@ -16,7 +16,7 @@
 
 -module(emqx_persistent_message).
 
--include("emqx.hrl").
+-include_lib("emqx/include/emqx.hrl").
 
 -export([init/0]).
 -export([is_persistence_enabled/0, force_ds/0]).

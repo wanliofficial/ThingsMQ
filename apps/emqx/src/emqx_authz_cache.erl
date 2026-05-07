@@ -16,7 +16,7 @@
 
 -module(emqx_authz_cache).
 
--include("emqx_access_control.hrl").
+-include_lib("emqx/include/emqx_access_control.hrl").
 
 -export([
     list_authz_cache/0,

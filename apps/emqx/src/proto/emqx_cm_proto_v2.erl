@@ -33,7 +33,7 @@
     kick_session/3
 ]).
 
--include("bpapi.hrl").
+-include_lib("emqx/include/bpapi.hrl").
 -include_lib("emqx/include/emqx_cm.hrl").
 
 introduced_in() ->

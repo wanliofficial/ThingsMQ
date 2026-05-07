@@ -7,7 +7,7 @@
 -compile(nowarn_export_all).
 -compile(export_all).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
 -import(emqx_dashboard_api_test_helpers, [request/4, uri/1]).

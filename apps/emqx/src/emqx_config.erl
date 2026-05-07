@@ -17,9 +17,9 @@
 
 -compile({no_auto_import, [get/0, get/1, put/2, erase/1]}).
 -elvis([{elvis_style, god_modules, disable}]).
--include("logger.hrl").
--include("emqx.hrl").
--include("emqx_schema.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 
 -export([
@@ -100,7 +100,7 @@
 -export([erase_all/0, backup_and_write/2]).
 -endif.
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 -define(CONF, conf).

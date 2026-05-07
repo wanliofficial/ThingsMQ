@@ -18,8 +18,8 @@
 
 -elvis([{elvis_style, no_spec_with_records, disable}]).
 
--include("emqx.hrl").
--include("emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
 
 %% Header APIs
 -export([

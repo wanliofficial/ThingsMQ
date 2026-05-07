@@ -16,7 +16,7 @@
 
 -module(emqx_authn_redis_schema).
 
--include("emqx_auth_redis.hrl").
+-include_lib("emqx_auth_redis/include/emqx_auth_redis.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 -behaviour(emqx_authn_schema).

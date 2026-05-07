@@ -18,7 +18,7 @@
 
 -behaviour(supervisor).
 
--include("rule_engine.hrl").
+-include_lib("emqx_rule_engine/include/rule_engine.hrl").
 
 -export([start_link/0]).
 

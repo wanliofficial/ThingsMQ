@@ -26,7 +26,7 @@
     select_union_member/1
 ]).
 
--include("emqx_auth_ldap.hrl").
+-include_lib("emqx_auth_ldap/include/emqx_auth_ldap.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 namespace() -> "authn".

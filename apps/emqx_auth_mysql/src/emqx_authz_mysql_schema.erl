@@ -16,7 +16,7 @@
 
 -module(emqx_authz_mysql_schema).
 
--include("emqx_auth_mysql.hrl").
+-include_lib("emqx_auth_mysql/include/emqx_auth_mysql.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 -behaviour(emqx_authz_schema).

@@ -32,7 +32,7 @@
     salt/0
 ]).
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
 
 -type password() :: binary().
 -type password_hash() :: binary().

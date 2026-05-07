@@ -17,7 +17,7 @@
 %% @doc The utility functions for erlang process dictionary.
 -module(emqx_pd).
 
--include("types.hrl").
+-include_lib("emqx/include/types.hrl").
 
 -export([
     get_counters/1,
@@ -48,7 +48,7 @@ get_counter(Key) ->
         Cnt -> Cnt
     end.
 
--spec inc_counter(key(), number()) -> maybe(number()).
+-spec inc_counter(key(), number()) -> option(number()).
 inc_counter(Key, Inc) ->
     put(Key, get_counter(Key) + Inc).
 

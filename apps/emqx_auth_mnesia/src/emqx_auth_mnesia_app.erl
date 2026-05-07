@@ -16,7 +16,7 @@
 
 -module(emqx_auth_mnesia_app).
 
--include("emqx_auth_mnesia.hrl").
+-include_lib("emqx_auth_mnesia/include/emqx_auth_mnesia.hrl").
 
 -behaviour(application).
 

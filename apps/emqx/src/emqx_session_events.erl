@@ -16,8 +16,9 @@
 
 -module(emqx_session_events).
 
--include("emqx.hrl").
--include("logger.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -export([handle_event/2]).
 

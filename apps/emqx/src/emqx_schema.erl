@@ -23,11 +23,11 @@
 -dialyzer(no_fail_call).
 -elvis([{elvis_style, invalid_dynamic_call, disable}]).
 
--include("emqx_schema.hrl").
--include("emqx_access_control.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/emqx_access_control.hrl").
 -include_lib("typerefl/include/types.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
--include_lib("logger.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -define(MAX_INT_MQTT_PACKET_SIZE, 268435456).
 -define(MAX_INT_TIMEOUT_MS, 4294967295).

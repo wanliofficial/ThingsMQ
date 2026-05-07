@@ -16,7 +16,7 @@
 
 -module(emqx_rule_funcs).
 
--include("rule_engine.hrl").
+-include_lib("emqx_rule_engine/include/rule_engine.hrl").
 -include_lib("emqx/include/logger.hrl").
 
 -elvis([{elvis_style, god_modules, disable}]).

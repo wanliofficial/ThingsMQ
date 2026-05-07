@@ -16,7 +16,7 @@
 
 -module(emqx_rule_engine_app).
 
--include("rule_engine.hrl").
+-include_lib("emqx_rule_engine/include/rule_engine.hrl").
 
 -behaviour(application).
 

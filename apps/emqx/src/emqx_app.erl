@@ -30,7 +30,8 @@
     init_load_done/0
 ]).
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 %%--------------------------------------------------------------------
 %% Application callbacks

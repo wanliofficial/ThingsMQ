@@ -17,8 +17,8 @@
 %% And there are a top level config handler maintains the overall config map.
 -module(emqx_config_handler).
 
--include("logger.hrl").
--include("emqx_schema.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("hocon/include/hocon_types.hrl").
 
 -behaviour(gen_server).

@@ -16,7 +16,7 @@
 
 -module(emqx_rule_runtime).
 
--include("rule_engine.hrl").
+-include_lib("emqx_rule_engine/include/rule_engine.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("emqx_resource/include/emqx_resource_errors.hrl").
 

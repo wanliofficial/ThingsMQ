@@ -16,7 +16,7 @@
 
 -module(emqx_persistent_session_ds_router).
 
--include("emqx.hrl").
+-include_lib("emqx/include/emqx.hrl").
 -include("emqx_persistent_session_ds/emqx_ps_ds_int.hrl").
 
 -export([init_tables/0]).

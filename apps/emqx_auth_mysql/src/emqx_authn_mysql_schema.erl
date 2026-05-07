@@ -26,7 +26,7 @@
     select_union_member/1
 ]).
 
--include("emqx_auth_mysql.hrl").
+-include_lib("emqx_auth_mysql/include/emqx_auth_mysql.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 namespace() -> "authn".

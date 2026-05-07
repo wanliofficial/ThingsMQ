@@ -25,7 +25,7 @@
 
 -include_lib("emqx/include/logger.hrl").
 
--include("emqx_mgmt.hrl").
+-include_lib("emqx_management/include/emqx_mgmt.hrl").
 
 %% API
 -export([

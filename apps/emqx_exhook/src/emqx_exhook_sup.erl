@@ -16,7 +16,7 @@
 
 -module(emqx_exhook_sup).
 
--include("emqx_exhook.hrl").
+-include_lib("emqx_exhook/include/emqx_exhook.hrl").
 
 -behaviour(supervisor).
 

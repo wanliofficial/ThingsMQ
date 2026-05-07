@@ -18,7 +18,8 @@
 
 -module(emqx_ocsp_cache).
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("public_key/include/public_key.hrl").
 -include_lib("ssl/src/ssl_handshake.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").

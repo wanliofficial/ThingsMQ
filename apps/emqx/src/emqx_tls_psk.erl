@@ -16,7 +16,8 @@
 
 -module(emqx_tls_psk).
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 %% SSL PSK Callbacks
 -export([lookup/3]).

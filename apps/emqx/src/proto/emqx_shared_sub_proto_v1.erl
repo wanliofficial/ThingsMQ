@@ -23,7 +23,7 @@
     dispatch_with_ack/5
 ]).
 
--include("bpapi.hrl").
+-include_lib("emqx/include/bpapi.hrl").
 
 %%================================================================================
 %% behaviour callbacks

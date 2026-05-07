@@ -18,7 +18,7 @@
 
 -behaviour(gen_server).
 
--include("emqx_retainer.hrl").
+-include_lib("emqx_retainer/include/emqx_retainer.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("emqx/include/emqx_mqtt.hrl").
 -include_lib("emqx/include/emqx_hooks.hrl").

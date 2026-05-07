@@ -45,7 +45,8 @@
 -behaviour(gen_server).
 -behaviour(emqx_config_handler).
 
--include("logger.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 
 -define(HTTP_TIMEOUT, timer:seconds(15)).

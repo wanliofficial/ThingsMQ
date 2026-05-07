@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 -module(emqx_trace_formatter).
--include("emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
 
 -export([format/2]).
 -export([format_meta_map/1]).

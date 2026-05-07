@@ -18,7 +18,7 @@
 
 %% NOTE: DO NOT remove this `-include`.
 %% We use this to force this module to be upgraded every release.
--include("emqx_release.hrl").
+-include_lib("emqx/include/emqx_release.hrl").
 
 -export([
     post_release_upgrade/2,

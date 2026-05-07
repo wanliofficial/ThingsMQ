@@ -16,7 +16,7 @@
 
 -module(emqx_auth_http_app).
 
--include("emqx_auth_http.hrl").
+-include_lib("emqx_auth_http/include/emqx_auth_http.hrl").
 
 -behaviour(application).
 

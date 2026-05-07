@@ -17,7 +17,7 @@
 %% Define the default actions.
 -module(emqx_rule_actions).
 
--include("rule_engine.hrl").
+-include_lib("emqx_rule_engine/include/rule_engine.hrl").
 -include_lib("emqx/include/logger.hrl").
 -include_lib("emqx/include/emqx.hrl").
 -include_lib("emqtt/include/emqtt.hrl").
@@ -283,12 +283,12 @@ render_pub_props(UserPropertiesTemplate, Selected, Env) ->
 -define(BADPROP(K, REASON, ENV, DATA),
     ?SLOG(
         debug,
-        DATA#{
+        maps:merge(DATA, #{
             msg => "bad_mqtt_property_value_ignored",
             rule_id => emqx_utils_maps:deep_get([metadata, rule_id], ENV, undefined),
             reason => REASON,
             property => K
-        }
+        })
     )
 ).
 

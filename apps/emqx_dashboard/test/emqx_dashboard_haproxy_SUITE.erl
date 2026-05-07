@@ -20,7 +20,7 @@
 -compile(export_all).
 
 -include_lib("eunit/include/eunit.hrl").
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 
 all() ->
     emqx_common_test_helpers:all(?MODULE).

@@ -16,7 +16,7 @@
 
 -module(emqx_authn_scram_mnesia).
 
--include("emqx_auth_mnesia.hrl").
+-include_lib("emqx_auth_mnesia/include/emqx_auth_mnesia.hrl").
 -include_lib("emqx_auth/include/emqx_authn.hrl").
 -include_lib("stdlib/include/ms_transform.hrl").
 -include_lib("typerefl/include/types.hrl").

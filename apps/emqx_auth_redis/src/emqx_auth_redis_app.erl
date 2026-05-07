@@ -16,7 +16,7 @@
 
 -module(emqx_auth_redis_app).
 
--include("emqx_auth_redis.hrl").
+-include_lib("emqx_auth_redis/include/emqx_auth_redis.hrl").
 
 -behaviour(application).
 

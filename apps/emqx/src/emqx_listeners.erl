@@ -17,9 +17,9 @@
 %% @doc Start/Stop MQTT listeners.
 -module(emqx_listeners).
 
--include("emqx_mqtt.hrl").
--include("emqx_schema.hrl").
--include("logger.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/logger.hrl").
 -include_lib("snabbkaffe/include/snabbkaffe.hrl").
 
 %% APIs

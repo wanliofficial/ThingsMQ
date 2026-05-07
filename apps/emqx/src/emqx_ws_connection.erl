@@ -17,11 +17,12 @@
 %% MQTT/WS|WSS Connection
 -module(emqx_ws_connection).
 
--include("emqx.hrl").
--include("emqx_cm.hrl").
--include("emqx_mqtt.hrl").
--include("logger.hrl").
--include("types.hrl").
+-include_lib("emqx/include/emqx.hrl").
+-include_lib("emqx/include/emqx_cm.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_schema.hrl").
+-include_lib("emqx/include/types.hrl").
+-include_lib("emqx/include/logger.hrl").
 
 -ifdef(TEST).
 -compile(export_all).
@@ -76,15 +77,15 @@
     %% Channel
     channel :: emqx_channel:channel(),
     %% GC State
-    gc_state :: maybe(emqx_gc:gc_state()),
+    gc_state :: option(emqx_gc:gc_state()),
     %% Postponed Packets|Cmds|Events
     postponed :: list(emqx_types:packet() | ws_cmd() | tuple()),
     %% Stats Timer
-    stats_timer :: disabled | maybe(reference()),
+    stats_timer :: disabled | option(reference()),
     %% Idle Timeout
     idle_timeout :: timeout(),
     %% Idle Timer
-    idle_timer :: maybe(reference()),
+    idle_timer :: option(reference()),
     %% Zone name
     zone :: atom(),
     %% Listener Type and Name

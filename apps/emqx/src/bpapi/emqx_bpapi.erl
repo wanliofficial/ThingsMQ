@@ -30,7 +30,7 @@
 
 -export_type([api/0, api_version/0, var_name/0, call/0, rpc/0, bpapi_meta/0]).
 
--include("emqx.hrl").
+-include_lib("emqx/include/emqx.hrl").
 -include_lib("stdlib/include/ms_transform.hrl").
 
 -type api() :: atom().

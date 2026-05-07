@@ -16,7 +16,7 @@
 
 -module(emqx_topic).
 
--include("emqx_mqtt.hrl").
+-include_lib("emqx/include/emqx_mqtt.hrl").
 
 %% APIs
 -export([

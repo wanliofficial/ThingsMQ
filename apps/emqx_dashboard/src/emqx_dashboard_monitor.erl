@@ -16,7 +16,7 @@
 
 -module(emqx_dashboard_monitor).
 
--include("emqx_dashboard.hrl").
+-include_lib("emqx_dashboard/include/emqx_dashboard.hrl").
 
 -include_lib("emqx/include/logger.hrl").
 

@@ -16,7 +16,7 @@
 
 -module(emqx_authn_mnesia_schema).
 
--include("emqx_auth_mnesia.hrl").
+-include_lib("emqx_auth_mnesia/include/emqx_auth_mnesia.hrl").
 -include_lib("hocon/include/hoconsc.hrl").
 
 -behaviour(emqx_authn_schema).
