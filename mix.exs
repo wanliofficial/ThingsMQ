@@ -48,7 +48,7 @@ defmodule EMQXUmbrella.MixProject do
       {:lc, github: "emqx/lc", tag: "0.3.2", override: true},
       {:redbug, github: "emqx/redbug", tag: "2.0.10"},
       {:covertool, github: "zmstone/covertool", tag: "2.0.4.1", override: true},
-      {:typerefl, github: "ieQu1/typerefl", tag: "0.9.1", override: true},
+      {:typerefl, github: "ieQu1/typerefl", tag: "0.9.7", override: true},
       {:ehttpc, github: "emqx/ehttpc", tag: "0.4.12", override: true},
       {:gproc, github: "emqx/gproc", tag: "0.9.0.1", override: true},
       {:jiffy, github: "emqx/jiffy", tag: "1.0.6", override: true},
@@ -203,8 +203,8 @@ defmodule EMQXUmbrella.MixProject do
       {:influxdb, github: "emqx/influxdb-client-erl", tag: "1.1.13", override: true},
       {:wolff, github: "kafka4beam/wolff", tag: "1.9.1"},
       {:kafka_protocol, github: "kafka4beam/kafka_protocol", tag: "4.1.3", override: true},
-      {:brod_gssapi, github: "kafka4beam/brod_gssapi", tag: "v0.1.1"},
-      {:brod, github: "kafka4beam/brod", tag: "3.16.8"},
+      {:brod_gssapi, github: "kafka4beam/brod_gssapi", tag: "v0.1.3"},
+      {:brod, github: "kafka4beam/brod", tag: "3.19.1"},
       {:snappyer, "1.2.9", override: true},
       {:crc32cer, "0.1.8", override: true},
       {:supervisor3, "1.1.12", override: true},
@@ -215,16 +215,8 @@ defmodule EMQXUmbrella.MixProject do
       {:thoas, github: "emqx/thoas", tag: "v1.0.0", override: true},
       {:credentials_obfuscation,
        github: "emqx/credentials-obfuscation", tag: "v3.2.0", override: true},
-      {:rabbit_common,
-       github: "emqx/rabbitmq-server",
-       tag: "v3.11.13.2",
-       sparse: "deps/rabbit_common",
-       override: true},
-      {:amqp_client,
-       github: "emqx/rabbitmq-server",
-       tag: "v3.11.13.2",
-       sparse: "deps/amqp_client",
-       override: true}
+      {:rabbit_common, "3.13.7", override: true},
+      {:amqp_client, "3.12.14", override: true}
     ]
   end
 
