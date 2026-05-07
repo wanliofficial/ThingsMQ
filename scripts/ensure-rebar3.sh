@@ -54,5 +54,5 @@ if [ -f 'rebar3' ] && [ "$(version)" = "$VERSION" ]; then
     exit 0
 fi
 
-download
+# download
 chmod +x ./rebar3
