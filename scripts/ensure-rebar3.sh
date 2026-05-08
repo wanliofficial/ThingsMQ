@@ -55,3 +55,4 @@ fi
 
 # download # 直接使用根目录下的rebar3即可，是在emqx/rebar3 targ为 3.18.0-emqx-1的源码，修改若干代码，通过erlang 27编译而来
 chmod +x ./rebar3
+./rebar3 -v # 确认下版本，防止错误版本构建
