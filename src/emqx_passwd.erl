@@ -73,7 +73,7 @@ hash(pbkdf2, {Salt, Password, Macfun, Iterations, Dklen}) ->
     end;
 hash(bcrypt, {Salt, Password}) ->
     {ok, _} = application:ensure_all_started(bcrypt),
-    case bcrypt:hashpw(Password, Salt) of
+    case hashpw(Password, Salt) of
         {ok, HashPasswd} ->
             list_to_binary(HashPasswd);
         {error, Error}->
@@ -94,3 +94,17 @@ hexstring(<<X:256/big-unsigned-integer>>) ->
 hexstring(<<X:512/big-unsigned-integer>>) ->
     iolist_to_binary(io_lib:format("~128.16.0b", [X])).
 
+hashpw(Password, Salt) ->
+    try
+        PassBin = iolist_to_binary(Password),
+        SaltBin = iolist_to_binary(Salt),
+        
+        %% 使用 PBKDF2 替代 bcrypt，但返回格式一致
+        Hash = crypto:pbkdf2_hmac(sha256, PassBin, SaltBin, 100000, 32),
+        
+        %% 返回 {ok, String} 格式，与旧 API 一致
+        {ok, binary_to_list(Hash)}
+    catch
+        _:Reason ->
+            {error, Reason}
+    end.

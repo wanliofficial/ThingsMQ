@@ -12,13 +12,10 @@ do(Dir, CONFIG) ->
             CONFIG
     end.
 
-bcrypt() ->
-    {bcrypt, {git, "https://github.com/emqx/erlang-bcrypt.git", {branch, "0.6.0"}}}.
-
 deps(Config) ->
     {deps, OldDeps} = lists:keyfind(deps, 1, Config),
     MoreDeps = case provide_bcrypt_dep() of
-        true -> [bcrypt()];
+        true -> [];
         false -> []
     end,
     {HasElixir, ExtraDeps} = extra_deps(),
@@ -257,7 +254,7 @@ relx_apps(ReleaseType) ->
     ]
     ++ [emqx_modules || not is_enterprise()]
     ++ [emqx_license || is_enterprise()]
-    ++ [bcrypt || provide_bcrypt_release(ReleaseType)]
+    % ++ [bcrypt || provide_bcrypt_release(ReleaseType)]
     ++ relx_apps_per_rel(ReleaseType)
     ++ [{N, load} || N <- relx_plugin_apps(ReleaseType)].
 
@@ -445,9 +442,6 @@ provide_bcrypt_dep() ->
         {win32, _} -> false;
         _ -> true
     end.
-
-provide_bcrypt_release(ReleaseType) ->
-    provide_bcrypt_dep() andalso ReleaseType =:= cloud.
 
 erl_opts_i() ->
     [{i, "apps"}] ++
