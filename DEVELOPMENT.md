@@ -3,6 +3,7 @@
 ## 本地构建
 
 ```bash
+rebar3 get-deps # 先用本地rebar3获取依赖
 make
 ```
 
