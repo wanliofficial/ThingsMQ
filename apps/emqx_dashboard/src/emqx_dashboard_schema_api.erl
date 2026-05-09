@@ -26,7 +26,7 @@
 -include_lib("hocon/include/hoconsc.hrl").
 
 %% minirest API
--export([api_spec/0, paths/0, schema/1]).
+-export([api_spec/0, paths/0, schema/1, namespace/0]).
 
 -export([get_schema/2]).
 
@@ -36,6 +36,8 @@
 %%--------------------------------------------------------------------
 %% minirest API and schema
 %%--------------------------------------------------------------------
+
+namespace() -> "dashboard".
 
 api_spec() ->
     emqx_dashboard_swagger:spec(?MODULE, #{check_schema => true}).

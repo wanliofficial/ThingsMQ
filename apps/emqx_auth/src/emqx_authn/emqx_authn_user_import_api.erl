@@ -34,13 +34,16 @@
 -export([
     api_spec/0,
     paths/0,
-    schema/1
+    schema/1,
+    namespace/0
 ]).
 
 -export([
     authenticator_import_users/2,
     listener_authenticator_import_users/2
 ]).
+
+namespace() -> "authn_user_import".
 
 api_spec() ->
     emqx_dashboard_swagger:spec(?MODULE, #{check_schema => false}).

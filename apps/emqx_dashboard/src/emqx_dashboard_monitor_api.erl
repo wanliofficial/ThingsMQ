@@ -22,7 +22,7 @@
 
 -behaviour(minirest_api).
 
--export([api_spec/0]).
+-export([api_spec/0, namespace/0]).
 
 -export([
     paths/0,
@@ -34,6 +34,8 @@
     monitor/2,
     monitor_current/2
 ]).
+
+namespace() -> "monitor".
 
 api_spec() ->
     emqx_dashboard_swagger:spec(?MODULE, #{check_schema => true, translate_body => true}).

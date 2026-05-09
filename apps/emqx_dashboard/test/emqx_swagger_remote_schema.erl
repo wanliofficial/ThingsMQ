@@ -19,6 +19,7 @@
 
 -export([roots/0, fields/1]).
 -import(hoconsc, [mk/2]).
+
 roots() -> ["root"].
 
 fields("root") ->

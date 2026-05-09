@@ -38,7 +38,8 @@
 -export([
     api_spec/0,
     paths/0,
-    schema/1
+    schema/1,
+    namespace/0
 ]).
 
 %% http handlers
@@ -52,6 +53,8 @@
 -export([schema_authn/0]).
 
 -define(TAGS, [<<"Gateway Authentication">>]).
+
+namespace() -> "gateway_authn".
 
 %%--------------------------------------------------------------------
 %% minirest behaviour callbacks

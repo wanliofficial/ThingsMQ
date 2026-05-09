@@ -16,8 +16,11 @@
     api_schemas/1,
     fields/1,
     %%examples/1
-    schema_modules/0
+    schema_modules/0,
+    namespace/0
 ]).
+
+namespace() -> "elasticsearch".
 
 resource_type(Type) when is_binary(Type) ->
     resource_type(binary_to_atom(Type, utf8));

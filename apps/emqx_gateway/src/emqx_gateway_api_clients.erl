@@ -37,7 +37,8 @@
 -export([
     api_spec/0,
     paths/0,
-    schema/1
+    schema/1,
+    namespace/0
 ]).
 
 -export([
@@ -62,6 +63,8 @@
 ]).
 
 -define(TAGS, [<<"Gateway Clients">>]).
+
+namespace() -> "gateway_clients".
 
 %%--------------------------------------------------------------------
 %% APIs

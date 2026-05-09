@@ -32,7 +32,8 @@
     get_raw_source/1,
     source_status/2,
     lookup_from_local_node/1,
-    lookup_from_all_nodes/1
+    lookup_from_all_nodes/1,
+    namespace/0
 ]).
 
 -export([
@@ -52,6 +53,8 @@
 -export([with_source/2]).
 
 -define(TAGS, [<<"Authorization">>]).
+
+namespace() -> "sources".
 
 api_spec() ->
     emqx_dashboard_swagger:spec(?MODULE, #{check_schema => true}).

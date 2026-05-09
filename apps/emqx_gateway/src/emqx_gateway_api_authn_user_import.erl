@@ -45,7 +45,11 @@
     import_listener_users/2
 ]).
 
+-export([namespace/0]).
+
 -define(TAGS, [<<"Gateway Authentication">>]).
+
+namespace() -> "gateway_authn_user_import".
 
 %%--------------------------------------------------------------------
 %% minirest behaviour callbacks

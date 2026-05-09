@@ -27,7 +27,8 @@
 -export([
     api_spec/0,
     paths/0,
-    schema/1
+    schema/1,
+    namespace/0
 ]).
 
 -export([
@@ -37,6 +38,8 @@
 
 %% http handlers
 -export([metrics/2]).
+
+namespace() -> "metrics".
 
 %%--------------------------------------------------------------------
 %% minirest behaviour callbacks

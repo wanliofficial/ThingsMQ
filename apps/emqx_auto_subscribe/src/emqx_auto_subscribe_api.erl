@@ -21,7 +21,8 @@
 -export([
     api_spec/0,
     paths/0,
-    schema/1
+    schema/1,
+    namespace/0
 ]).
 
 -export([auto_subscribe/2]).
@@ -32,6 +33,8 @@
 
 -include_lib("hocon/include/hoconsc.hrl").
 -include_lib("emqx/include/emqx_placeholder.hrl").
+
+namespace() -> "auto_subscribe".
 
 api_spec() ->
     emqx_dashboard_swagger:spec(?MODULE, #{check_schema => true}).

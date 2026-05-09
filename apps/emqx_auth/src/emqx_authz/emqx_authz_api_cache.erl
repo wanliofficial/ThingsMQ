@@ -23,7 +23,8 @@
 -export([
     api_spec/0,
     paths/0,
-    schema/1
+    schema/1,
+    namespace/0
 ]).
 
 -export([
@@ -31,6 +32,8 @@
 ]).
 
 -define(BAD_REQUEST, 'BAD_REQUEST').
+
+namespace() -> "cache".
 
 api_spec() ->
     emqx_dashboard_swagger:spec(?MODULE, #{check_schema => true}).

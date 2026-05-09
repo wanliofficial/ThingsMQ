@@ -30,7 +30,8 @@
     api_spec/0,
     schema/1,
     paths/0,
-    fields/1
+    fields/1,
+    namespace/0
 ]).
 
 %% API callbacks
@@ -40,6 +41,8 @@
     node_metrics/2,
     node_stats/2
 ]).
+
+namespace() -> "nodes".
 
 %%--------------------------------------------------------------------
 %% API spec funcs

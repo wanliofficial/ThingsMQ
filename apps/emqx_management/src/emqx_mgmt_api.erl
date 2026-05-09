@@ -23,7 +23,8 @@
 -define(LONG_QUERY_TIMEOUT, 50000).
 
 -export([
-    paginate/3
+    paginate/3,
+    namespace/0
 ]).
 
 %% first_next query APIs
@@ -109,6 +110,8 @@ do_paginate(Qh, Count, Params, {Module, FormatFun}) ->
         meta => #{page => Page, limit => Limit, count => Count},
         data => [erlang:apply(Module, FormatFun, [Row]) || Row <- Rows]
     }.
+
+namespace() -> "management".
 
 query_handle(Table) ->
     qlc:q([R || R <- ets:table(Table)]).

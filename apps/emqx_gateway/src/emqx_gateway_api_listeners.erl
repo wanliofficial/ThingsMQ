@@ -40,7 +40,8 @@
 -export([
     api_spec/0,
     paths/0,
-    schema/1
+    schema/1,
+    namespace/0
 ]).
 
 -export([
@@ -61,6 +62,8 @@
 -export([do_listeners_cluster_status/1]).
 
 -define(TAGS, [<<"Gateway Listeners">>]).
+
+namespace() -> "gateway_listeners".
 
 %%--------------------------------------------------------------------
 %% minirest behaviour callbacks

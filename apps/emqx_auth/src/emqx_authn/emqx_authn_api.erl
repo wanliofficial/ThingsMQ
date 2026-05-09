@@ -90,7 +90,11 @@
 
 -export([update_config/2]).
 
+-export([namespace/0]).
+
 -elvis([{elvis_style, god_modules, disable}]).
+
+namespace() -> "auth".
 
 api_spec() ->
     emqx_dashboard_swagger:spec(?MODULE, #{check_schema => true}).

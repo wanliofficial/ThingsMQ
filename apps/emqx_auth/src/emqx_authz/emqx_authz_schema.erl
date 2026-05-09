@@ -22,7 +22,8 @@
 -export([
     roots/0,
     fields/1,
-    desc/1
+    desc/1,
+    namespace/0
 ]).
 
 -export([
@@ -58,6 +59,8 @@
 -optional_callbacks([
     api_source_refs/0
 ]).
+
+namespace() -> "authn".
 
 %%--------------------------------------------------------------------
 %% Hocon Schema

@@ -20,7 +20,7 @@
 -include_lib("hocon/include/hoconsc.hrl").
 
 %% minirest API
--export([api_spec/0, paths/0, schema/1]).
+-export([api_spec/0, paths/0, schema/1, namespace/0]).
 
 -export([get_status/2]).
 
@@ -30,6 +30,8 @@
 ]).
 
 -define(TAGS, [<<"Status">>]).
+
+namespace() -> "status".
 
 %%--------------------------------------------------------------------
 %% minirest API and schema
