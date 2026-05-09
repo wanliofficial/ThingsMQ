@@ -34,7 +34,7 @@ Mnesia.*/
 *.DS_Store
 _checkouts
 rebar.config.rendered
-/rebar3
+# /rebar3
 rebar.lock
 .stamp
 tmp/
