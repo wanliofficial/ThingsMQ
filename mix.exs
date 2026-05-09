@@ -49,7 +49,7 @@ defmodule EMQXUmbrella.MixProject do
       {:redbug, github: "emqx/redbug", tag: "2.0.10"},
       {:covertool, github: "zmstone/covertool", tag: "2.0.4.1", override: true},
       {:typerefl, github: "ieQu1/typerefl", tag: "0.9.7", override: true},
-      {:ehttpc, github: "emqx/ehttpc", tag: "0.4.12", override: true},
+      {:ehttpc, github: "emqx/ehttpc", tag: "0.7.0", override: true},
       {:gproc, github: "emqx/gproc", tag: "0.9.0.1", override: true},
       {:jiffy, github: "emqx/jiffy", tag: "1.0.6", override: true},
       {:cowboy, github: "emqx/cowboy", tag: "2.9.2", override: true},
