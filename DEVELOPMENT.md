@@ -17,3 +17,15 @@ cd _build/default/plugins/erlfmt
 rebar3 as release escriptize
 cp _build/release/bin/erlfmt ../../../../scripts/erlfmt
 ```
+
+## 打包
+```bash
+# 1. 先单独编译 emqx profile
+make compile-emqx
+
+# 2. 如果成功，再构建 tgz
+make emqx-tgz
+
+# 跳过 relup 加速构建（如果你不需要热升级）
+EMQX_RELUP=false make emqx-tgz
+```
